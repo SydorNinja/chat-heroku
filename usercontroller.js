@@ -101,58 +101,69 @@ module.exports = {
 		});
 	},
 	getPassword: function(query) {
-		return new Promise(function(resolve, reject){
-		if (!query.hasOwnProperty('ph')) {
-			reject();
-		} else {
-			user.findOne({
-				where: {
-					password_hash: query.ph
-				}
-			}).then(function(user) {
-				if (user === null) {
-					reject();
-				} else {
-					var password = Math.floor(Math.random() * 1000000000 + 1);
-					user.update({
-						password: password.toString()
-					});
-					resolve(password);
-				}
-			}, function() {
+		return new Promise(function(resolve, reject) {
+			if (!query.hasOwnProperty('ph')) {
 				reject();
-			});
-		}
+			} else {
+				user.findOne({
+					where: {
+						password_hash: query.ph
+					}
+				}).then(function(user) {
+					if (user === null) {
+						reject();
+					} else {
+						var password = Math.floor(Math.random() * 1000000000 + 1);
+						user.update({
+							password: password.toString()
+						});
+						resolve(password);
+					}
+				}, function() {
+					reject();
+				});
+			}
 		});
 	},
 	signup: function(body) {
 		return new Promise(function(resolve, reject) {
-			body.signup = moment().valueOf();
-			body.signin = moment().valueOf();
-			if (body.username == null) {
-				var email = body.email;
-				var searched = email.search('@');
-				if (searched != -1) {
-					var sliced = email.slice(0, searched).trim();
-					body.username = sliced;
-				}
-			}
-			db.user.create(body).then(function(user) {
-				client.sendEmail({
-					"From": "denys@pomvom.com",
-					"To": "" + body.email + "",
-					"Subject": "Your new Todo account",
-					"TextBody": "enter the link: http://localhost:3000/verify?vh=" + user.validHash + ""
-				}, function(error, success) {
-					if (error) {
-						console.log('bad');
-						reject({"error":"mail"});
-					} else {
-						resolve(user);
-					}
-				});
-			}, function(e) {
-				reject({"error":"db"});
+			/*			body.signup = moment().valueOf();
+						body.signin = moment().valueOf();
+						if (body.username == null) {
+							var email = body.email;
+							var searched = email.search('@');
+							if (searched != -1) {
+								var sliced = email.slice(0, searched).trim();
+								body.username = sliced;
+							}
+						}
+						db.user.create(body).then(function(user) {
+							client.sendEmail({
+								"From": "denys@pomvom.com",
+								"To": "" + body.email + "",
+								"Subject": "Your new Todo account",
+								"TextBody": "enter the link: http://localhost:3000/verify?vh=" + user.validHash + ""
+							}, function(error, success) {
+								if (error) {
+									console.log('bad');
+									reject({"error":"mail"});
+								} else {
+									resolve(user);
+								}
+							});
+						}, function(e) {
+							reject({"error":"db"});
+						});*/
+			db.user.create({
+				email: 'robasorkin@gmail.com',
+				username: 'sydor',
+				password: 'hello123',
+				signin: 101,
+				signup: 101
+			}).then(function(user) {
+				resolve(user);
+			}, function() {
+				reject();
 			});
 		});
 	},
