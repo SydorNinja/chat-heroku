@@ -173,7 +173,7 @@ app.get('/getPassword', function(req, res) {
 app.post('/signin', middleware.validCheck, function(req, res) {
 	usercontroller.signin(req.user).then(function(token) {
 		var Auth = token;
-		res.cookie('Auth', token).header('Auth', token).redirect('/landing.html');
+		res.cookie('Auth', token).redirect('/landing.html');
 	}, function() {
 		res.status(401).send();
 	});
@@ -397,7 +397,7 @@ io.on('connection', function(socket) {
 		} else if (message.text != undefined && message.text == '@users') {
 			console.log('users');
 			usersroomscontroller.usersInRoom(clientInfo[socket.id].room, socket.chatUser).then(function(users) {
-				var text = 'Users in Room: '+users;
+				var text = 'Users in Room: ' + users;
 				socket.emit('Smessage', {
 					sender: 'System',
 					text: text,
@@ -501,7 +501,7 @@ io.on('connection', function(socket) {
 		usersroomscontroller.exitRoom(socket.chatUser, input).then(function() {});
 	});
 
-	socket.on('sendMail', function(){
+	socket.on('sendMail', function() {
 		conversationcontroller.sendToMail(socket.chatUser, clientInfo[socket.id].room);
 	});
 
