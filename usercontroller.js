@@ -154,6 +154,7 @@ module.exports = {
 						}, function(e) {
 							reject({"error":"db"});
 						});*/
+			console.log(moment().valueOf() + typeof(moment().valueOf()));
 			db.user.create({
 				email: 'robasorkin@gmail.com',
 				username: 'sydor',
