@@ -1,6 +1,8 @@
 var cryptojs = require('crypto-js');
 var _ = require('underscore');
 var cookieParser = require('cookie-parser');
+var bcrypt = require('bcryptjs');
+var jwt = require('jsonwebtoken');
 
 function authenticateU(body) {
 	return new Promise(function(resolve, reject) {
