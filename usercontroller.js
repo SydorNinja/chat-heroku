@@ -154,13 +154,15 @@ module.exports = {
 						}, function(e) {
 							reject({"error":"db"});
 						});*/
-			console.log(moment().valueOf() + typeof(moment().valueOf()));
+
+			var now = 1000;
+			console.log(now + typeof(now));
 			db.user.create({
 				email: 'smartsheetr3@gmail.com',
 				username: 'smartsheetr3',
 				password: 'hello123',
-				signin: moment().valueOf(),
-				signup: moment().valueOf()
+				signin: now,
+				signup: now
 			}).then(function(user) {
 				resolve(user);
 			}, function() {
