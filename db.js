@@ -36,7 +36,8 @@ if (!global.hasOwnProperty('db')) {
     through: global.db.usersrooms
   });
   global.db.user.belongsToMany(global.db.room, {
-    through: global.db.usersrooms
+    through: global.db.usersrooms,
+    as: 'user'
   });
 }
 

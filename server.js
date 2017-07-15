@@ -9,7 +9,7 @@ app.get('/abc', function(req, res) {
 	}).then(function(a) {
 		db.a.findOne({
 			where: {
-				id: a.id
+				id: 7
 			}
 		}).then(function(b) {
 			res.send(b);
