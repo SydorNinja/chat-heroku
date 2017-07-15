@@ -171,7 +171,7 @@ app.get('/getPassword', function(req, res) {
 });
 
 app.post('/signin', middleware.validCheck, function(req, res) {
-	console.log('101 pass');
+	console.log(req.user);
 	usercontroller.signin(req.user).then(function(token) {
 		var Auth = token;
 		res.cookie('Auth', token).redirect('https://sleepy-escarpment-54775.herokuapp.com/landing.html');
