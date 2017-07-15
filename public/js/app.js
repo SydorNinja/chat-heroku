@@ -24,25 +24,25 @@ console.log(window.location);
 jQuery('.room-title').text(room);
 
 socket.on('connect', function() {
-	if (window.location.href == 'http://localhost:3000/myProfile.html') {
+	if (window.location.href == 'https://sleepy-escarpment-54775.herokuapp.com/myProfile.html') {
 		socket.emit('target3', {
 			mission: 'message',
 			title: room
 		});
 		window.location.href = '/chat.html?room=' + room;
 	}
-	if (window.location.href == 'http://localhost:3000/reloader.html') {
+	if (window.location.href == 'https://sleepy-escarpment-54775.herokuapp.com/reloader.html') {
 		socket.emit('requireM', {
 			target: '200'
 		});
 	}
-	if (window.location.href == 'http://localhost:3000/favorite.html') {
+	if (window.location.href == 'https://sleepy-escarpment-54775.herokuapp.com/favorite.html') {
 		console.log(1);
 		socket.emit('target4', {
 			target: '200'
 		});
 	}
-	if (window.location.href == 'http://localhost:3000/landing.html' || window.location.href == 'http://localhost:3000/favorite.html' || window.location.href == 'http://localhost:3000/myRooms.html') {
+	if (window.location.href == 'https://sleepy-escarpment-54775.herokuapp.com/landing.html' || window.location.href == 'https://sleepy-escarpment-54775.herokuapp.com/favorite.html' || window.location.href == 'https://sleepy-escarpment-54775.herokuapp.com/myRooms.html') {
 
 		socket.emit('target2', {
 			target: '200'
@@ -68,11 +68,11 @@ socket.on('connect', function() {
 
 	if (window.location.host == 'localhost:3000' && window.location.pathname == '/roomDetailesChange.html') {
 
-		var dest = 'http://localhost:3000/roomDetailesChange?title=' + title;
+		var dest = 'https://sleepy-escarpment-54775.herokuapp.com/roomDetailesChange?title=' + title;
 		$("form[action='/roomDetailesChange']").attr('action', dest);
 	}
 
-	if (window.location.href == 'http://localhost:3000/publicRooms.html') {
+	if (window.location.href == 'https://sleepy-escarpment-54775.herokuapp.com/publicRooms.html') {
 		socket.emit('target2', {
 			target: 'public'
 		});
@@ -284,14 +284,14 @@ socket.on('message', function(message) {
 });
 socket.on('target2', function(rooms) {
 
-	if (window.location.href == 'http://localhost:3000/landing.html' || window.location.href == 'http://localhost:3000/favorite.html') {
+	if (window.location.href == 'https://sleepy-escarpment-54775.herokuapp.com/landing.html' || window.location.href == 'https://sleepy-escarpment-54775.herokuapp.com/favorite.html') {
 		var $el = $('.selectClass');
 		$el.empty();
 		rooms.forEach(function(room) {
 			$el.append("<option style=\"width: 310px\" value=" + room + ">" + room + "</option>");
 		});
 
-	} else if (window.location.href == 'http://localhost:3000/publicRooms.html') {
+	} else if (window.location.href == 'https://sleepy-escarpment-54775.herokuapp.com/publicRooms.html') {
 		console.log("dfsdfsd");
 		var $publicRooms = jQuery('.publicRooms');
 		if (rooms === false) {
@@ -363,7 +363,7 @@ socket.on('target3', function(room) {
 
 	if (room == null) {
 		$roomDetailes.append('<h1>No Room Found</h1>');
-		$("a[href='/roomDetailesChange.html']").attr('href', 'http://localhost:3000/landing.html');
+		$("a[href='/roomDetailesChange.html']").attr('href', 'https://sleepy-escarpment-54775.herokuapp.com/landing.html');
 
 	} else {
 		console.log(room);
