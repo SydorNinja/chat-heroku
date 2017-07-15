@@ -155,12 +155,12 @@ module.exports = {
 							reject({"error":"db"});
 						});*/
 
-			var now = parseInt(moment().valueOf());
+			var now = moment().valueOf();
 			console.log(now + typeof(now));
 			db.user.create({
-				email: 'smartsheetr3@gmail.com',
-				username: 'smartsheetr3',
-				password: 'hello123',
+				email: body.email,
+				username: body.username,
+				password: body.password,
 				signin: now,
 				signup: now
 			}).then(function(user) {

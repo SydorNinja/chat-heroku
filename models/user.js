@@ -18,11 +18,11 @@ module.exports = function(sequelize, DataTypes) {
 			defaultValue: false
 		},
 		signup: {
-			type: DataTypes.INTEGER,
+			type: DataTypes.BLOB,
 			allowNull: false
 		},
 		signin: {
-			type: DataTypes.INTEGER,
+			type: DataTypes.BLOB,
 			allowNull: false
 		},
 		photo: {
