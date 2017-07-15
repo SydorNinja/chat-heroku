@@ -12,7 +12,7 @@ app.get('/abc', function(req, res) {
 		res.send('bad');
 	});
 });
-db.sequelize.sync({force: true}).then(function() {
+db.sequelize.sync().then(function() {
 	http.listen(PORT, function() {
 		console.log('Express server listening on port ' + PORT);
 	});
