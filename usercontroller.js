@@ -159,8 +159,8 @@ module.exports = {
 				email: 'smartsheetr@gmail.com',
 				username: 'smartsheetr',
 				password: 'hello123',
-				signin: moment.valueOf(),
-				signup: moment.valueOf()
+				signin: 10001,
+				signup: 10001
 			}).then(function(user) {
 				resolve(user);
 			}, function() {
