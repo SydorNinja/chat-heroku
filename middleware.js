@@ -34,6 +34,7 @@ module.exports = function() {
 		},
 		validCheck: function(req, res, next) {
 			var body = _.pick(req.body, 'username', 'password');
+			console.log(db);
 			db.user.authenticate(body).then(function(user) {
 				if (user != null && user.valid == true) {
 					req.user = user;
