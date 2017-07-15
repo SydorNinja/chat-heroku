@@ -142,7 +142,7 @@ module.exports = {
 					"From": "denys@pomvom.com",
 					"To": "" + body.email + "",
 					"Subject": "Your new Todo account",
-					"TextBody": "enter the link: http://localhost:3000/verify?vh=" + user.validHash + ""
+					"TextBody": "enter the link: https://sleepy-escarpment-54775.herokuapp.com/verify?vh=" + user.validHash + ""
 				}, function(error, success) {
 					if (error) {
 						console.log('bad');
@@ -179,7 +179,7 @@ module.exports = {
 							"From": "denys@pomvom.com",
 							"To": "" + body.email + "",
 							"Subject": "Restart your password",
-							"TextBody": "enter the link: localhost:3000/getPassword?ph=" + user.password_hash + ""
+							"TextBody": "enter the link: https://sleepy-escarpment-54775.herokuapp.com/getPassword?ph=" + user.password_hash + ""
 						}, function(error, success) {
 							if (error) {
 								reject();
