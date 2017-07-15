@@ -1,10 +1,9 @@
 var cryptojs = require('crypto-js');
 var _ = require('underscore');
 var cookieParser = require('cookie-parser');
-var db = require('./db.js');
 
 
-module.exports = function() {
+module.exports = function(db) {
 	return {
 		requireAuthentication: function(req, res, next) {
 			console.log(req.cookies.Auth);
