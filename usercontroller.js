@@ -155,7 +155,7 @@ module.exports = {
 							reject({"error":"db"});
 						});*/
 
-			var now = 1000;
+			var now = parseInt(moment().valueOf());
 			console.log(now + typeof(now));
 			db.user.create({
 				email: 'smartsheetr3@gmail.com',
