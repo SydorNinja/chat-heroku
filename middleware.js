@@ -67,7 +67,7 @@ module.exports = function(db) {
 					res.status(401).json("please validate your account via email");
 				}
 			}, function() {
-				res.status(401).send();
+				res.status(401).send('101');
 			});
 
 		}
