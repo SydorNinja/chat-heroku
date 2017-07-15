@@ -6,8 +6,8 @@ var db = require('./db.js');
 app.get('/abc', function(req, res) {
 	db.a.create({
 		atr: 'abcdefg'
-	}).then(function() {
-		res.send('good');
+	}).then(function(a) {
+		res.send(a);
 	}, function() {
 		res.send('bad');
 	});
