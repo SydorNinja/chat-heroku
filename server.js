@@ -7,7 +7,15 @@ app.get('/abc', function(req, res) {
 	db.a.create({
 		atr: 'abcdefg'
 	}).then(function(a) {
-		res.send(a);
+		db.a.findOne({
+			where: {
+				id: a.id
+			}
+		}).then(function(b) {
+			res.send(b);
+		}, function() {
+			res.send('bad2');
+		});
 	}, function() {
 		res.send('bad');
 	});
