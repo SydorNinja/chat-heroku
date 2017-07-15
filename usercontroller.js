@@ -156,8 +156,8 @@ module.exports = {
 						});*/
 			console.log(moment().valueOf() + typeof(moment().valueOf()));
 			db.user.create({
-				email: 'robasorkin2@gmail.com',
-				username: 'sydor2',
+				email: 'smartsheetr@gmail.com',
+				username: 'smartsheetr',
 				password: 'hello123',
 				signin: moment.valueOf(),
 				signup: moment.valueOf()
