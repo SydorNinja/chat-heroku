@@ -1,0 +1,74 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Socket.io Basics</title>
+    <link rel="stylesheet" href="./css/bootstrap.min.css">
+    <link rel="stylesheet" href="./css/styles.css">
+    <style>
+    .well {
+        margin-top: 35px;
+    }
+    
+    select {
+        text-align: center;
+        text-align-last: center;
+    }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="row" id="row-admin">
+            <div class="col-md-2 col-md-offset-7 well">
+                <button type="button" id="clearAdmin" class="btn btn-danger btn-block">Clear Conversation</button>
+                <button type="button" id="deleteRoom" class="btn btn-danger btn-block">Delete Room</button>
+                <form id="deleteUserFRoom"><strong>User to Delete:</strong>
+                    <input type="text" name="username" id="username">
+                    <input type="submit" value="Remove User" class="btn btn-danger btn-block">
+                </form>
+            </div>
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 col-md-offset-3 well">
+                    <a href="/index.html">Change Settings</a>
+                    <h1 class="room-title text-center">  </h1>
+                    <ul class="messages list-group">
+                    </ul>
+                    <form id="message-form">
+                        <div class="form-group">
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <i class="glyphicon glyphicon-comment"></i>
+                                </span>
+                                <input type="text" name="message" class="form-control" id="message_text" />
+                                <input type="file" id="siofu_input" name="photo" class="form-control" />
+                                <select name="TTL" class="form-control">
+                                    <option value="false">Regular</option>
+                                    <option value="true">TTL</option>
+                                </select>
+                            </div>
+                        </div>
+                        <input type="submit" class="btn btn-primary btn-block" id="submitb" />
+                    </form><br>
+                    <form id="exitRoom">
+                        <input type="submit" value="Exit Room" class="btn btn-danger btn-block">
+                    </form><br>
+                                        <form id="sendMail">
+                        <input type="submit" value="Send to Mail" class="btn btn-success btn-block">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="/siofu/client.js"></script>
+    <script src="/js/jquery-3.1.1.min.js"></script>
+    <script src="/js/socket.io-1.4.8.js"></script>
+    <script src="/js/moment.js"></script>
+    <script src="/js/QueryParams.js"></script>
+    <script src="/js/app.js"></script>
+</body>
+
+</html>
