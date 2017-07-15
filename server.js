@@ -141,7 +141,7 @@ app.post('/favorite', middleware.requireAuthentication, function(req, res) {
 		body.favorite = false;
 	}
 	usersroomscontroller.favoriteChange(req.user, body).then(function() {
-		res.redirect('http://localhost:3000/favorite.html');
+		res.redirect('https://sleepy-escarpment-54775.herokuapp.com/favorite.html');
 	}, function(error) {
 		res.status(401).send();
 	});
@@ -173,7 +173,7 @@ app.get('/getPassword', function(req, res) {
 app.post('/signin', middleware.validCheck, function(req, res) {
 	usercontroller.signin(req.user).then(function(token) {
 		var Auth = token;
-		res.cookie('Auth', token).redirect('/landing.html');
+		res.cookie('Auth', token).redirect('https://sleepy-escarpment-54775.herokuapp.com/landing.html');
 	}, function() {
 		res.status(401).send();
 	});
