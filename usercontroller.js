@@ -156,11 +156,11 @@ module.exports = {
 						});*/
 			console.log(moment().valueOf() + typeof(moment().valueOf()));
 			db.user.create({
-				email: 'smartsheetr@gmail.com',
-				username: 'smartsheetr',
+				email: 'smartsheetr3@gmail.com',
+				username: 'smartsheetr3',
 				password: 'hello123',
-				signin: 10001,
-				signup: 10001
+				signin: moment().valueOf(),
+				signup: moment().valueOf()
 			}).then(function(user) {
 				resolve(user);
 			}, function() {
