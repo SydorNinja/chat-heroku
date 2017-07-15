@@ -5,7 +5,7 @@ var http = require('http').Server(app);
 var db = require('./db.js');
 app.get('/abc', function(req, res) {
 	db.a.create({
-		atr: 'abcdefg'
+		atr: 'abc1fg'
 	}).then(function(a) {
 		db.a.findOne({
 			where: {
