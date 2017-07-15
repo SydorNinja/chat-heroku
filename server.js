@@ -57,6 +57,6 @@ app.post('/signup', function(req, res) {
 });
 db.sequelize.sync().then(function() {
 	http.listen(PORT, function() {
-		console.log('Express server listening on port ' + PORT);
+		console.log('Express server listening on port: ' + PORT);
 	});
 });
