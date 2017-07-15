@@ -5,7 +5,7 @@ var room = getQueryVariable("room");
 var socket = io();
 var days = getQueryVariable('days');
 var messagesNum = getQueryVariable('messagesNum');
-if (window.location.host == 'localhost:3000' && window.location.pathname == '/chat.html') {
+if (window.location.host == 'sleepy-escarpment-54775.herokuapp.com' && window.location.pathname == '/chat.html') {
 
 	var instance = new SocketIOFileUpload(socket);
 	instance.listenOnSubmit(document.getElementById("submitb"), document.getElementById("siofu_input"));
@@ -48,14 +48,14 @@ socket.on('connect', function() {
 			target: '200'
 		});
 	}
-	if (window.location.host == 'localhost:3000' && window.location.pathname == '/roomDetailes.html') {
+	if (window.location.host == 'sleepy-escarpment-54775.herokuapp.com' && window.location.pathname == '/roomDetailes.html') {
 
 		socket.emit('target3', {
 			title: title
 		});
 	}
 
-	if (window.location.host == 'localhost:3000' && window.location.pathname == '/chat.html') {
+	if (window.location.host == 'sleepy-escarpment-54775.herokuapp.com' && window.location.pathname == '/chat.html') {
 		socket.emit('target3', {
 			mission: 'message',
 			title: room
@@ -66,7 +66,7 @@ socket.on('connect', function() {
 		});
 	}
 
-	if (window.location.host == 'localhost:3000' && window.location.pathname == '/roomDetailesChange.html') {
+	if (window.location.host == 'sleepy-escarpment-54775.herokuapp.com' && window.location.pathname == '/roomDetailesChange.html') {
 
 		var dest = 'https://sleepy-escarpment-54775.herokuapp.com/roomDetailesChange?title=' + title;
 		$("form[action='/roomDetailesChange']").attr('action', dest);
