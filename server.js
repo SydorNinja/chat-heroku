@@ -46,6 +46,15 @@ app.get('/abc', function(req, res) {
 		res.send('bad');
 	});
 });
+app.post('/signup', function(req, res) {
+	var body = _.pick(req.body, 'email', 'password', 'username');
+	console.log(body);
+	usercontroller.signup(body).then(function(user) {
+		res.send('Please Validate your account through mail');
+	}, function(error) {
+		res.status(400).send(error);
+	});
+});
 db.sequelize.sync().then(function() {
 	http.listen(PORT, function() {
 		console.log('Express server listening on port ' + PORT);
