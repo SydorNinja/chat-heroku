@@ -22,7 +22,11 @@ console.log(__dirname);
     sequelize: sequelize,
     a: sequelize.import(__dirname + '/models/a.js'),
     user: sequelize.import(__dirname + '/models/user.js'),
-    room: sequelize.import(__dirname + '/models/user.js')
+    room: sequelize.import(__dirname + '/models/user.js'),
+    token: sequelize.import(__dirname + '/models/token.js'),
+    conversation: sequelize.import(__dirname + '/models/conversation.js'),
+    usersrooms: sequelize.import(__dirname + '/models/usersrooms.js')
+
       // add your other models here
   }
 
