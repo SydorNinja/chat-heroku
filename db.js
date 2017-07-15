@@ -1,7 +1,7 @@
 if (!global.hasOwnProperty('db')) {
   var Sequelize = require('sequelize'),
     sequelize = null
-console.log(__dirname);
+  console.log(__dirname);
   if (process.env.DATABASE_URL) {
     var match = process.env.DATABASE_URL.match(/postgres:\/\/([^:]+):([^@]+)@([^:]+):(\d+)\/(.+)/);
     // the application is executed on Heroku ... use the postgres database
@@ -27,13 +27,17 @@ console.log(__dirname);
     conversation: sequelize.import(__dirname + '/models/conversation.js'),
     usersrooms: sequelize.import(__dirname + '/models/usersrooms.js')
 
-      // add your other models here
+    // add your other models here
   }
 
-  /*
-    Associations can be defined here. E.g. like this:
-    global.db.User.hasMany(global.db.SomethingElse)
-  */
+  global.db.token.belongsTo(global.db.user);
+  global.db.user.hasMany(global.db.token);
+  global.db.room.belongsToMany(global.db.user, {
+    through: global.db.usersrooms
+  });
+  global.db.user.belongsToMany(global.db.room, {
+    through: global.db.usersrooms
+  });
 }
 
 module.exports = global.db
