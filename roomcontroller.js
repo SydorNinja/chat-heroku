@@ -18,7 +18,9 @@ module.exports = {
 				}
 				db.room.create(creator).then(function(room) {
 					user.addRoom(room, {
-						role: 1
+						through: {
+							role: 1
+						}
 					});
 					var publicFormRoom = _.pick(room, 'private', 'title');
 					resolve(publicFormRoom);
@@ -33,7 +35,9 @@ module.exports = {
 	deleteRoom: function(user, body) {
 		return new Promise(function(resolve, reject) {
 			if (body != null) {
-				var where = {title: body};
+				var where = {
+					title: body
+				};
 				console.log(where);
 				db.room.findOne({
 					where: where
