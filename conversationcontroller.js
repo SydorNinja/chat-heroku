@@ -56,6 +56,7 @@ function a(conversations) {
 module.exports = {
 	upload: function(message) {
 		return new Promise(function(resolve, reject) {
+			console.log(message);
 			db.usersrooms.findOne({
 				where: {
 					roomId: message.roomId,
