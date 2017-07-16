@@ -13,7 +13,7 @@ if (window.location.host == 'sleepy-escarpment-54775.herokuapp.com' && window.lo
 
 function daysCalc(messages, days) {
 	for (var i = 0; i < messages.length; i++) {
-		if (messages[i].time < moment().valueOf() - days * 86400) {
+		if (parseInt(messages[i].time) < moment().valueOf() - days * 86400) {
 			messages.splice(i, 1);
 		}
 	}
@@ -25,8 +25,7 @@ jQuery('.room-title').text(room);
 
 socket.on('connect', function() {
 	if (window.location.href == 'https://sleepy-escarpment-54775.herokuapp.com/myProfile.html') {
-		socket.emit('target', {
-		});
+		socket.emit('target', {});
 	}
 	if (window.location.href == 'https://sleepy-escarpment-54775.herokuapp.com/reloader.html') {
 		socket.emit('requireM', {
@@ -99,7 +98,7 @@ socket.on('messages', function(result) {
 	} else {
 		messages.forEach(function(message) {
 			console.log(message);
-			var timestampMoment = moment.utc(message.time);
+			var timestampMoment = moment.utc(parseInt(message.time));
 
 			var $message = jQuery('<li class="list-group-item"></li>');
 
@@ -179,7 +178,7 @@ socket.on('Smessage', function(message) {
 	var $messages = jQuery('.messages');
 	console.log("SM");
 	console.log(message);
-	var timestampMoment = moment.utc(message.timestamp);
+	var timestampMoment = moment.utc(parseInt(message.timestamp));
 	console.log(timestampMoment);
 	var $message = jQuery('<li class="list-group-item"></li>');
 	$message.append('<p><strong>' + message.sender + ' ' + timestampMoment.local().format('h:mm a') + '</strong></p>');
@@ -245,7 +244,6 @@ $sendMail.on('submit', function(event) {
 
 
 
-
 $('#clearAdmin').click(function(event) {
 	socket.emit('clear', {});
 });
@@ -260,8 +258,8 @@ socket.on('target', function(profile) {
 	var username = profile.username;
 	var email = profile.email;
 	var photo = profile.photo;
-	var signin = profile.signin;
-	var signup = profile.signup;
+	var signin = parseInt(profile.signin);
+	var signup = parseInt(profile.signup);
 	var $profile = jQuery('.profiles');
 	$profile.append('<p><strong> Username: ' + username + '</strong></p>');
 	$profile.append('<p><strong> Email: ' + email + '</strong></p>');
