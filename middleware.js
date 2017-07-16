@@ -4,52 +4,6 @@ var cookieParser = require('cookie-parser');
 var bcrypt = require('bcryptjs');
 var jwt = require('jsonwebtoken');
 
-function authenticateU(body) {
-	return new Promise(function(resolve, reject) {
-		if (!_.isString(body.username) || !_.isString(body.password)) {
-			console.log('not string ' + body.password + body.username);
-			return reject();
-		}
-		user.findOne({
-			where: {
-				username: body.username
-			}
-		}).then(function(user) {
-			if (!user || !bcrypt.compareSync(body.password, user.get('password_hash'))) {
-				console.log('password error');
-				return reject();
-			}
-			resolve(user);
-
-
-		}, function(e) {
-			reject();
-		});
-	});
-}
-
-function tokenF (token) {
-	return new Promise(function(resolve, reject) {
-		try {
-			var decodedJWT = jwt.verify(token, 'qwerty098');
-			var bytes = cryptojs.AES.decrypt(decodedJWT.token, 'abc123!@#!');
-			var tokenData = JSON.parse(bytes.toString(cryptojs.enc.Utf8));
-
-			user.findById(tokenData.id).then(function(user) {
-				if (user) {
-					resolve(user);
-				} else {
-					reject();
-				}
-			}, function(e) {
-				reject();
-			})
-		} catch (e) {
-			reject();
-		}
-	});
-}
-
 module.exports = function(db) {
 	return {
 		requireAuthentication: function(req, res, next) {
@@ -65,7 +19,7 @@ module.exports = function(db) {
 					res.status(401).send();
 				}
 				req.token = tokenInstance;
-				return tokenF(token);
+				return db.user.findByToken(token);
 			}, function() {
 				res.status(401).send();
 			}).then(function(user) {
@@ -81,7 +35,7 @@ module.exports = function(db) {
 		validCheck: function(req, res, next) {
 			var body = _.pick(req.body, 'username', 'password');
 			console.log(db);
-			authenticateU(body).then(function(user) {
+			db.user.authenticate(body).then(function(user) {
 				if (user != null && user.valid == true) {
 					req.user = user;
 					next();

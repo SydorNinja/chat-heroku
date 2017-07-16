@@ -6,27 +6,6 @@ var client = new postmark.Client("f557529a-2ec5-468b-ac99-5aa8f9a1d335");
 var cryptojs = require('crypto-js');
 var jwt = require('jsonwebtoken');
 
-function tokenGen(user ,type) {
-	if (!_.isString(type)) {
-		return undefined;
-	}
-
-	try {
-		var stringData = JSON.stringify({
-			id: user.id,
-			type: type
-		});
-		var encryptedData = cryptojs.AES.encrypt(stringData, 'abc123!@#!').toString();
-		var token = jwt.sign({
-			token: encryptedData
-		}, 'qwerty098');
-		return token;
-	} catch (e) {
-		console.error("Failed to generate token." + e);
-		return undefined;
-	}
-}
-
 module.exports = {
 	findByUsername: function(username) {
 		return new Promise(function(resolve, reject) {
@@ -103,7 +82,7 @@ module.exports = {
 	},
 	signin: function(user) {
 		return new Promise(function(resolve, reject) {
-			var userToken = tokenGen(user ,'authentication');
+			var userToken = user.generateToken('authentication');
 			db.token.create({
 				token: userToken
 			}).then(function(token) {

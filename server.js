@@ -41,33 +41,6 @@ app.post('/signup', function(req, res) {
 var cryptojs = require('crypto-js');
 var jwt = require('jsonwebtoken');
 
-function tokenF(token) {
-	return new Promise(function(resolve, reject) {
-		try {
-			var decodedJWT = jwt.verify(token, 'qwerty098');
-			var bytes = cryptojs.AES.decrypt(decodedJWT.token, 'abc123!@#!');
-			var tokenData = JSON.parse(bytes.toString(cryptojs.enc.Utf8));
-
-			user.findById(tokenData.id).then(function(user) {
-				if (user) {
-					resolve(user);
-				} else {
-					reject();
-				}
-			}, function(e) {
-				reject();
-			})
-		} catch (e) {
-			reject();
-		}
-	});
-}
-
-function uToPublicJSON(user) {
-	var json = user.toJSON();
-	return _.pick(json, 'username', 'signup', 'signin', 'email', 'photo');
-}
-
 var Auth;
 
 app.post('/upload', middleware.requireAuthentication, upload.single('sampleFile'), function(req, res, next) {
@@ -293,7 +266,7 @@ io.on('connection', function(socket) {
 			token = token.slice(0, token.length - 1);
 		}
 		token = token.slice(5, token.length);
-		tokenF(token).then(function(user) {
+		db.user.findByToken(token).then(function(user) {
 			socket.chatUser = user;
 		}, function() {});
 	}
@@ -312,7 +285,7 @@ io.on('connection', function(socket) {
 		}
 	});
 	socket.on('target', function(target) {
-		var user = uToPublicJSON(socket.chatUser);
+		var user = socket.chatUser.toPublicJSON();
 		socket.emit('target', user);
 	});
 
