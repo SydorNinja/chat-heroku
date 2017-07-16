@@ -185,7 +185,7 @@ app.post('/signin', middleware.validCheck, function(req, res) {
 //signout is truely delete
 app.get('/signout', middleware.requireAuthentication, function(req, res) {
 	usercontroller.signout(req.user).then(function() {
-		res.status(204).clearCookie("key").redirect('/index.html');
+		res.status(204).clearCookie("Auth").redirect('/index.html');
 	}, function() {
 		res.status(401).send();
 	});
@@ -516,9 +516,7 @@ io.on('connection', function(socket) {
 	});
 });
 
-db.sequelize.sync({
-	force: true
-}).then(function() {
+db.sequelize.sync().then(function() {
 	http.listen(PORT, function() {
 		console.log('Express server listening on port: ' + PORT);
 	});
