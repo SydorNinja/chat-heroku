@@ -69,6 +69,7 @@ module.exports = {
 							setTimeout(function() {
 								messageCreated.destroy();
 								resolve();
+								console.log('destroyed');
 							}, 300000);
 
 						} else {

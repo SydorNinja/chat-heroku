@@ -474,6 +474,7 @@ io.on('connection', function(socket) {
 							io.to(clientInfo[socket.id].room).emit('requireM', {});
 							conversationcontroller.upload(message).then(function() {
 								io.to(clientInfo[socket.id].room).emit('requireM', {});
+								console.log('sent');
 							});
 						} else {
 							conversationcontroller.upload(message);
