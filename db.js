@@ -33,12 +33,10 @@ if (!global.hasOwnProperty('db')) {
   global.db.token.belongsTo(global.db.user);
   global.db.user.hasMany(global.db.token);
   global.db.room.belongsToMany(global.db.user, {
-    through: global.db.usersrooms,
-    as: 'room'
+    through: global.db.usersrooms
   });
   global.db.user.belongsToMany(global.db.room, {
-    through: global.db.usersrooms,
-    as: 'user'
+    through: global.db.usersrooms
   });
 }
 
