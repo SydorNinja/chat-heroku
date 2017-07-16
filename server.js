@@ -453,7 +453,7 @@ io.on('connection', function(socket) {
 
 						}
 					}, function() {});
-				}, 100);
+				}, 500);
 			} else {
 				db.room.findOne({
 					where: {
