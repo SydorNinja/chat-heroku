@@ -27,7 +27,6 @@ socket.on('connect', function() {
 	if (window.location.href == 'https://sleepy-escarpment-54775.herokuapp.com/myProfile.html') {
 		socket.emit('target', {
 		});
-		window.location.href = '/chat.html?room=' + room;
 	}
 	if (window.location.href == 'https://sleepy-escarpment-54775.herokuapp.com/reloader.html') {
 		socket.emit('requireM', {
