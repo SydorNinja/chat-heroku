@@ -73,11 +73,13 @@ module.exports = {
 							}, 300000);
 
 						} else {
+							console.log('regular');
 							resolve();
 						}
 
 					});
 				} else {
+					console.log('bad');
 					reject();
 				}
 			});
