@@ -212,6 +212,8 @@ $form.on('submit', function(event) {
 
 	if ($TTL.val() == "true") {
 		message.TTL = true;
+	}else{
+		console.log(TTL +' not true');
 	}
 	if ($text.length > 0) {
 		message.text = $text;
