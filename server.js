@@ -63,7 +63,10 @@ function tokenF(token) {
 	});
 }
 
-
+function uToPublicJSON(user) {
+	var json = user.toJSON();
+	return _.pick(json, 'username', 'signup', 'signin', 'email', 'photo');
+}
 
 var Auth;
 
@@ -309,7 +312,7 @@ io.on('connection', function(socket) {
 		}
 	});
 	socket.on('target', function(target) {
-		var user = socket.chatUser.toPublicJSON();
+		var user = uToPublicJSON(socket.chatUser);
 		socket.emit('target', user);
 	});
 
