@@ -254,7 +254,7 @@ function sendPrivate(message, username) {
 
 io.on('connection', function(socket) {
 	var uploader = new SocketIOFileUploadServer();
-	uploader.dir = "C:/Users/Owner/Desktop/Robert/NodeJs/projects/chat/uploads";
+	uploader.dir = __dirname + "/uploads";
 	console.log('path: ' + __dirname);
 	uploader.listen(socket);
 	var token = socket.handshake.headers.cookie.split(" ");
@@ -360,13 +360,13 @@ io.on('connection', function(socket) {
 
 		if (_.isString(request.messageUpload.photo)) {
 			setTimeout(function() {
-				fs.readFile('C:/Users/Owner/Desktop/Robert/NodeJs/projects/chat/uploads/' + request.messageUpload.photo, function(err, data) {
+				fs.readFile(__dirname + "/uploads/" + request.messageUpload.photo, function(err, data) {
 					var photoname = request.messageUpload.photo;
 					console.log(data);
 					var base64Image = 'data:image/png;base64,' + new Buffer(data, 'binary').toString('base64');
 					console.log(base64Image);
 					messageUpload.photo = base64Image;
-					fs.unlink('C:/Users/Owner/Desktop/Robert/NodeJs/projects/chat/uploads/' + photoname);
+					fs.unlink(__dirname + "/uploads/" + photoname);
 				});
 
 				conversationcontroller.editMessage(socket.chatUser, id, messageUpload).then(function() {
@@ -422,12 +422,12 @@ io.on('connection', function(socket) {
 			console.log(original.photo);
 			if (typeof(original.photo) === 'string') {
 				setTimeout(function() {
-					fs.readFile('C:/Users/Owner/Desktop/Robert/NodeJs/projects/chat/uploads/' + original.photo, function(err, data) {
+					fs.readFile(__dirname + "/uploads/" + original.photo, function(err, data) {
 						console.log(data);
 						var base64Image = 'data:image/png;base64,' + new Buffer(data, 'binary').toString('base64');
 						console.log(base64Image);
 						message.photo = base64Image;
-						fs.unlink('C:/Users/Owner/Desktop/Robert/NodeJs/projects/chat/uploads/' + original.photo);
+						fs.unlink(__dirname + "/uploads/" + original.photo);
 					});
 
 
