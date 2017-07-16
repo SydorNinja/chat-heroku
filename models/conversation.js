@@ -21,7 +21,7 @@ module.exports = function(sequelize, DataTypes) {
 			allowNull: false
 		},
 		TTL: {
-			type: DataTypes.INTEGER
+			type: DataTypes.BOOLEAN
 		},
 		photo: {
 			type: DataTypes.TEXT
