@@ -75,7 +75,7 @@ socket.on('connect', function() {
 		});
 	}
 
-	console.log('Connected to socket.io server!');
+	console.log('Connected to socket.io server! ');
 });
 
 socket.on('messages', function(result) {
