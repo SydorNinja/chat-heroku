@@ -3,6 +3,7 @@ var moment = require('moment');
 var _ = require('underscore');
 var postmark = require("postmark");
 var client = new postmark.Client("f557529a-2ec5-468b-ac99-5aa8f9a1d335");
+var cryptojs = require('crypto-js');
 
 function tokenGen(user ,type) {
 	if (!_.isString(type)) {
