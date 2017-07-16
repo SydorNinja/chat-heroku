@@ -69,7 +69,7 @@ module.exports = {
 							setTimeout(function() {
 								messageCreated.destroy();
 								resolve();
-							}, 150000);
+							}, 300000);
 
 						} else {
 							resolve();
