@@ -289,6 +289,12 @@ io.on('connection', function(socket) {
 		socket.emit('target', user);
 	});
 
+		socket.on('targeta', function(target) {
+		var user = usercontroller.findByUsername(target.user);
+		socket.emit('target', user);
+	});
+
+
 	socket.on('target2', function(target) {
 		if (target.target === 'public') {
 			roomcontroller.showPublicRooms().then(function(rooms) {

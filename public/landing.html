@@ -37,18 +37,18 @@
                             <label>Room</label>
                             <div class="input-group">
                                 <span class="input-group-addon">
-						<i class="glyphicon glyphicon-user"></i>
-					</span>
+                        <i class="glyphicon glyphicon-inbox"></i>
+                    </span>
                                 <select name="room" class="selectClass form-control" ;>
                                 </select>
                             </div>
                         </div>
                         <div><strong>Days:</strong>
-                        <input type="text" name="days" class="form-control">
-                        <br>
-                        <strong>Number of Messages to Show:</strong>
-                        <input type="text" name="messagesNum" class="form-control">
-                        <br>
+                            <input type="text" name="days" class="form-control">
+                            <br>
+                            <strong>Number of Messages to Show:</strong>
+                            <input type="text" name="messagesNum" class="form-control">
+                            <br>
                             <input type="submit" value="See messages" class="btn btn-primary btn-block" />
                         </div>
                     </form>
@@ -57,13 +57,27 @@
                             <label>Title</label>
                             <div class="input-group">
                                 <span class="input-group-addon">
-						<i class="glyphicon glyphicon-user"></i>
-					</span>
+                        <i class="glyphicon glyphicon-inbox"></i>
+                    </span>
                                 <input type="text" name="title" class="form-control" />
                             </div>
                         </div>
                         <div>
                             <input type="submit" value="Search for Room" class="btn btn-primary btn-block" />
+                        </div>
+                    </form>
+                    <form id="user-form" action="/profile.html">
+                        <div class="form-group">
+                            <label>Usename:</label>
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                        <i class="glyphicon glyphicon-inbox"></i>
+                    </span>
+                                <input type="text" name="username" class="form-control" />
+                            </div>
+                        </div>
+                        <div>
+                            <input type="submit" value="See User Profile" class="btn btn-primary btn-block" />
                         </div>
                     </form>
                     <br>

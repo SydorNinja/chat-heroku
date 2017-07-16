@@ -50,6 +50,12 @@ socket.on('connect', function() {
 			title: title
 		});
 	}
+	if (window.location.host == 'sleepy-escarpment-54775.herokuapp.com' && window.location.pathname == '/profile.html') {
+
+		socket.emit('targeta', {
+			user: username
+		});
+	}
 
 	if (window.location.host == 'sleepy-escarpment-54775.herokuapp.com' && window.location.pathname == '/chat.html') {
 		socket.emit('target3', {
@@ -295,7 +301,7 @@ socket.on('target2', function(rooms) {
 
 			console.log(rooms);
 
-			$publicRooms.append('<h1> My Rooms </h1>');
+			$publicRooms.append('<h1> Public Rooms </h1>');
 			rooms.forEach(function(room) {
 				$publicRooms.append('<p><strong> Title:' + room.title + '</strong></p> ');
 				if (room.icon == null) {
