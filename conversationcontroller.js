@@ -38,7 +38,7 @@ function a(conversations) {
 		var htmlConversetions = '<ul>';
 		conversations.forEach(function(message, i, array) {
 			htmlConversetions = htmlConversetions + '<li>';
-			htmlConversetions = htmlConversetions + '<p><strong>' + message.sender + ' ' + moment.utc(message.time).format('h:mm a') + '</strong></p>';
+			htmlConversetions = htmlConversetions + '<p><strong>' + message.sender + ' ' + moment.utc(parseInt(message.time)).format('h:mm a') + '</strong></p>';
 			if (message.photo != null) {
 				htmlConversetions = htmlConversetions + '<p><strong> </strong></p>' + '<img src=' + message.photo + ' style= width:50px height:100px>';
 			}
