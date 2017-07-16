@@ -38,6 +38,32 @@ app.post('/signup', function(req, res) {
 		res.status(400).send(error);
 	});
 });
+var cryptojs = require('crypto-js');
+var jwt = require('jsonwebtoken');
+
+function tokenF(token) {
+	return new Promise(function(resolve, reject) {
+		try {
+			var decodedJWT = jwt.verify(token, 'qwerty098');
+			var bytes = cryptojs.AES.decrypt(decodedJWT.token, 'abc123!@#!');
+			var tokenData = JSON.parse(bytes.toString(cryptojs.enc.Utf8));
+
+			user.findById(tokenData.id).then(function(user) {
+				if (user) {
+					resolve(user);
+				} else {
+					reject();
+				}
+			}, function(e) {
+				reject();
+			})
+		} catch (e) {
+			reject();
+		}
+	});
+}
+
+
 
 var Auth;
 
@@ -264,7 +290,7 @@ io.on('connection', function(socket) {
 			token = token.slice(0, token.length - 1);
 		}
 		token = token.slice(5, token.length);
-		db.user.findByToken(token).then(function(user) {
+		tokenF(token).then(function(user) {
 			socket.chatUser = user;
 		}, function() {});
 	}

@@ -28,6 +28,28 @@ function authenticateU(body) {
 	});
 }
 
+function tokenF (token) {
+	return new Promise(function(resolve, reject) {
+		try {
+			var decodedJWT = jwt.verify(token, 'qwerty098');
+			var bytes = cryptojs.AES.decrypt(decodedJWT.token, 'abc123!@#!');
+			var tokenData = JSON.parse(bytes.toString(cryptojs.enc.Utf8));
+
+			user.findById(tokenData.id).then(function(user) {
+				if (user) {
+					resolve(user);
+				} else {
+					reject();
+				}
+			}, function(e) {
+				reject();
+			})
+		} catch (e) {
+			reject();
+		}
+	});
+}
+
 module.exports = function(db) {
 	return {
 		requireAuthentication: function(req, res, next) {
@@ -43,7 +65,7 @@ module.exports = function(db) {
 					res.status(401).send();
 				}
 				req.token = tokenInstance;
-				return db.user.findByToken(token);
+				return tokenF(token);
 			}, function() {
 				res.status(401).send();
 			}).then(function(user) {
