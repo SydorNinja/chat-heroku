@@ -289,9 +289,10 @@ io.on('connection', function(socket) {
 		socket.emit('target', user);
 	});
 
-		socket.on('targeta', function(target) {
-		var user = usercontroller.findByUsername(target.user);
-		socket.emit('target', user);
+	socket.on('targeta', function(target) {
+		usercontroller.findByUsername(target.user).then(function(user) {
+			socket.emit('target', user);
+		});
 	});
 
 

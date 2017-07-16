@@ -15,8 +15,8 @@ module.exports = {
 				}
 			}).then(function(user) {
 				if (user != null) {
-					user.signin = moment.utc(user.signin).local().format('MMMM Do, h:mm a');
-					user.signup = moment.utc(user.signup).local().format('MMMM Do YYYY, h:mm a');
+					user.signin = moment.utc(parseInt(user.signin)).local().format('MMMM Do, h:mm a');
+					user.signup = moment.utc(parseInt(user.signup)).local().format('MMMM Do YYYY, h:mm a');
 					resolve(user);
 				} else {
 					reject();
