@@ -5,7 +5,7 @@ module.exports = function(sequelize, DataTypes) {
 			type: DataTypes.STRING
 		},
 		time: {
-			type: DataTypes.BLOB,
+			type: DataTypes.BIGINT,
 			allowNull: false
 		},
 		userId: {
