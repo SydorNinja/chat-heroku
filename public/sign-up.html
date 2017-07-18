@@ -22,7 +22,7 @@
                                 <span class="input-group-addon">
                                 <i class="glyphicon glyphicon-user"></i>
                             </span>
-                                <input type="text" name="username" class="form-control" ng-model="username" ng-minlength="4" ng-maxlength="12" required ng-trim="false"/>
+                                <input type="text" name="username" class="form-control" ng-model="username" ng-minlength="4" ng-maxlength="12" required ng-trim="true"/>
                             </div>
                             <span ng-show="myForm.username.$error.minlength">Too short!</span>
                             <span ng-show="myForm.username.$error.maxlength">Too long!</span>
@@ -33,7 +33,7 @@
                                 <span class="input-group-addon">
                                 <i class="glyphicon glyphicon-asterisk"></i>
                             </span>
-                                <input type="password" name="password" class="form-control" ng-model="password" ng-minlength="7" ng-maxlength="100" required ng-trim="false"/>
+                                <input type="password" name="password" class="form-control" ng-model="password" ng-minlength="7" ng-maxlength="100" required ng-trim="true"/>
                             </div>
                             <span ng-show="myForm.password.$error.minlength">Too short!</span>
                             <span ng-show="myForm.password.$error.maxlength">Too long!</span>
@@ -44,7 +44,7 @@
                                 <span class="input-group-addon">
                                 <i class="glyphicon glyphicon-envelope"></i>
                             </span>
-                                <input ntype="email" name="email" class="form-control" ng-model="email" required ng-trim="false"/>
+                                <input ntype="email" name="email" class="form-control" ng-model="email" required ng-trim="true"/>
                                 <span ng-show="myForm.myAddress.$error.email">Not a valid e-mail address</span>
                             </div>
                         </div>
