@@ -87,6 +87,9 @@ socket.on('messages', function(result) {
 	console.log('role');
 	console.log(result);
 	var messages = result.result;
+	messages = messages.sort(function(a, b) {
+		return a.id - b.id
+	});
 	if (days != "") {
 		daysCalc(messages, parseInt(days));
 	}
