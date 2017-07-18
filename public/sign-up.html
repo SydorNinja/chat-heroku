@@ -32,9 +32,10 @@
                                 <i class="glyphicon glyphicon-asterisk"></i>
                             </span>
                                 <input type="password" name="password" class="form-control" ng-model="password" ng-minlength="7" ng-maxlength="100" required/>
-                                <span class="error" ng-show="myForm.password.$error.minlength">Too short!</span>
-                                <span class="error" ng-show="myForm.password.$error.maxlength">Too long!</span>
+
                             </div>
+                                <span ng-show="myForm.password.$error.minlength">Too short!</span>
+                                <span ng-show="myForm.password.$error.maxlength">Too long!</span>
                         </div>
                         <div class="form-group">
                             <label>email</label>
