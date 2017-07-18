@@ -87,16 +87,7 @@ socket.on('messages', function(result) {
 	console.log('role');
 	console.log(result);
 	var messages = result.result;
-	messages = messages.sort(function(a, b) {
-		return a.id - b.id
-	});
-	if (days != "") {
-		daysCalc(messages, parseInt(days));
-	}
 
-	if (messagesNum != "" && messages.length > messagesNum) {
-		messages = messages.slice(messages.length - messagesNum, messages.length);
-	}
 
 	var $messages = jQuery('.messages');
 	$messages.empty();
@@ -105,6 +96,16 @@ socket.on('messages', function(result) {
 		console.log("sorry");
 		$messages.append('<p><h1>No Messages</strong></p>');
 	} else {
+		messages = messages.sort(function(a, b) {
+			return a.id - b.id
+		});
+		if (days != "") {
+			daysCalc(messages, parseInt(days));
+		}
+
+		if (messagesNum != "" && messages.length > messagesNum) {
+			messages = messages.slice(messages.length - messagesNum, messages.length);
+		}
 		messages.forEach(function(message) {
 			console.log(message);
 			var timestampMoment = moment.utc(parseInt(message.time));
@@ -215,9 +216,9 @@ $form.on('submit', function(event) {
 
 	if ($TTL.val() == "true") {
 		message.TTL = true;
-		console.log($TTL.val() +' is true');
-	}else{
-		console.log($TTL.val() +' not true');
+		console.log($TTL.val() + ' is true');
+	} else {
+		console.log($TTL.val() + ' not true');
 	}
 	if ($text.length > 0) {
 		message.text = $text;
