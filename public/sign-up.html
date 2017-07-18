@@ -33,10 +33,10 @@
                             </span>
                                 <input type="password" name="password" class="form-control" ng-model="password" ng-minlength="7" ng-maxlength="100" required/>
                                 <div role="alert">
-                                    <span class="error" ng-show="myForm.password.$error.minlength">
-                                    Too short!</span>
-                                    <span class="error" ng-show="myForm.password.$error.maxlength">
-                                     Too long!</span>
+                                    <div class="error" ng-show="myForm.password.$error.minlength">
+                                    Too short!</div>
+                                    <div class="error" ng-show="myForm.password.$error.maxlength">
+                                     Too long!</div>
                                 </div>
                             </div>
                         </div>
