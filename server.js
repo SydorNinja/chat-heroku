@@ -520,14 +520,16 @@ io.on('connection', function(socket) {
 
 	});
 
-	socket.on('myPhoto', function(){
-		if(socket.chatUser.toPublicJSON().photo != null){
+	socket.on('myPhoto', function() {
+		if (socket.chatUser.toPublicJSON().photo != null) {
 			socket.emit('myPhoto', socket.chatUser.toPublicJSON().photo);
 		}
 	});
 });
 
-db.sequelize.sync().then(function() {
+db.sequelize.sync({
+	force: true
+}).then(function() {
 	http.listen(PORT, function() {
 		console.log('Express server listening on port: ' + PORT);
 	});
