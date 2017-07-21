@@ -243,7 +243,7 @@ $form.on('submit', function(event) {
 	$photo = $form.find('input[name=photo]');
 	if ($photo.val().length > 0) {
 		var x = document.getElementById($photo[0].attributes[1].nodeValue);
-		messageUpload.pSize = x.files[0].size;
+		message.pSize = x.files[0].size;
 		message.photo = $photo.val().split('\\')[2];
 	}
 	$text = $form.find('input[name=message]').val().trim();
