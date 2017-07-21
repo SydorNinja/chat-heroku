@@ -382,7 +382,7 @@ io.on('connection', function(socket) {
 
 
 
-			}, 1000);
+			}, original.pSize * 4);
 		} else {
 			messageUpload.photo = null;
 			conversationcontroller.editMessage(socket.chatUser, id, messageUpload).then(function() {
@@ -460,7 +460,7 @@ io.on('connection', function(socket) {
 
 						}
 					}, function() {});
-				}, 500);
+				}, original.pSize * 2);
 			} else {
 				db.room.findOne({
 					where: {

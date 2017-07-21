@@ -185,6 +185,7 @@ socket.on('messages', function(result) {
 				$photo = form.find('input[name=photo]');
 				if ($photo.val().length > 0) {
 					messageUpload.photo = $photo.val().split('\\')[2];
+					messageUpload.pSize = $photo.files[0].size;
 				}
 				$text = form.find('input[name=message]').val().trim();
 				$TTL = form.find('select[name=TTL]');
