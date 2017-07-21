@@ -379,10 +379,9 @@ io.on('connection', function(socket) {
 				conversationcontroller.editMessage(socket.chatUser, id, messageUpload).then(function() {
 					io.to(clientInfo[socket.id].room).emit('requireM', {});
 				});
+				console.log(original.pSize);
 
-
-
-			}, original.pSize * 4);
+			}, original.pSize * 400);
 		} else {
 			messageUpload.photo = null;
 			conversationcontroller.editMessage(socket.chatUser, id, messageUpload).then(function() {
