@@ -197,7 +197,7 @@ socket.on('messages', function(result) {
 					messageUpload.text = $text;
 				}
 				if (messageUpload.text != undefined || messageUpload.photo != undefined) {
-					console.log("good");
+					console.log("good!");
 					message.id = id;
 					message.messageUpload = messageUpload;
 					socket.emit('changeMessage', message);
