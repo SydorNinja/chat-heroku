@@ -519,6 +519,12 @@ io.on('connection', function(socket) {
 		});
 
 	});
+
+	socket.on('myPhoto', function(){
+		if(socket.chatUser.toPublicJSON().photo != null){
+			socket.emit('myPhoto', socket.chatUser.toPublicJSON().photo);
+		}
+	});
 });
 
 db.sequelize.sync().then(function() {

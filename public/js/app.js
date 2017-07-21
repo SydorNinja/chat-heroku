@@ -436,3 +436,13 @@ socket.on('target3', function(room) {
 
 	}
 });
+
+
+
+if (window.location.pathname == '/landing.html') {
+	socket.emit('myPhoto', {});
+}
+
+socket.on('myPhoto', function(photo){
+	$('#myPhoto').attr('src', photo);
+});
