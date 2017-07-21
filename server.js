@@ -531,6 +531,6 @@ db.sequelize.sync({
 	force: true
 }).then(function() {
 	http.listen(PORT, function() {
-		console.log('Express server listening on port: ' + PORT);
+		console.log('Express server is listening on port: ' + PORT);
 	});
 });
