@@ -14,7 +14,10 @@ if (!global.hasOwnProperty('db')) {
     })
   } else {
     // the application is executed on the local machine ... use mysql
-    sequelize = new Sequelize('example-app-db', 'root', null);
+    sequelize = new Sequelize(undefined, undefined, undefined, {
+      'dialect': 'sqlite',
+      'storage': __dirname + '/data/chat.sqlite'
+    });
   }
 
   global.db = {
