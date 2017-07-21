@@ -1,4 +1,4 @@
-if (window.location.pathname != '/sign-up.html') {
+if (window.location.pathname != '/sign-up.html' && window.location.pathname != '/index.html' && window.location.pathname != '/') {
 
 
 	var username = getQueryVariable('username');
@@ -14,26 +14,29 @@ if (window.location.pathname != '/sign-up.html') {
 			return undefined
 		}
 	}
-	var $un = $('#signupform').find('input[id=signuper-un]');
-	var $pass = $('#signupform').find('input[id=signuper-pass]');
-	var $email = $('#signupform').find('input[id=signuper-email]');
-	$('#signupform').on('input', function(event) {
+	var $un = $('#sform').find('input[id=sform-un]');
+	var $pass = $('#sform').find('input[id=sform-pass]');
+	var $email = $('#sform').find('input[id=sform-email]');
+	$('#sform').on('input', function(event) {
 		$pass.val('' + $pass.val().replace(' ', '') + '');
 		$un.val('' + $un.val().replace(' ', '') + '');
-		$email.val('' + $email.val().replace(' ', '') + '');
+		if (window.location.pathname == '/sign-up.html') {
+			$email.val('' + $email.val().replace(' ', '') + '');
+		}
+
 	});
 
-	$('#signupform').on('submit', function(event) {
-		if ($un.val().length >= 4 &&  $un.val().length <= 12 && $pass.val().length >= 7 && $pass.val().length <= 100) {
-			event.preventDefault();
-			console.log(1);
-		}else{
+	$('#sform').on('submit', function(event) {
+		if ($un.val().length >= 4 && $un.val().length <= 12 && $pass.val().length >= 7 && $pass.val().length <= 100) {} else {
 			event.preventDefault();
 			console.log(2);
 		}
 	});
 
 }
+
+
+
 if (window.location.host == 'sleepy-escarpment-54775.herokuapp.com' && window.location.pathname == '/chat.html') {
 
 	var instance = new SocketIOFileUpload(socket);

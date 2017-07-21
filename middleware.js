@@ -40,10 +40,10 @@ module.exports = function(db) {
 					req.user = user;
 					next();
 				} else {
-					res.status(401).json("please validate your account via email");
+					res.status(204).json("please validate your account via email");
 				}
 			}, function() {
-				res.status(401).send('101');
+				res.status(204).send();
 			});
 
 		}
