@@ -184,7 +184,7 @@ socket.on('messages', function(result) {
 
 				$photo = form.find('input[name=photo]');
 				if ($photo.val().length > 0) {
-					document.cookie="photo="+$photo.val();
+					document.cookie="photo="+$photo;
 					messageUpload.photo = $photo.val().split('\\')[2];
 				}
 				$text = form.find('input[name=message]').val().trim();
