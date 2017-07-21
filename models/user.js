@@ -26,7 +26,7 @@ module.exports = function(sequelize, DataTypes) {
 			allowNull: false
 		},
 		photo: {
-			type: DataTypes.STRING
+			type: DataTypes.TEXT
 		},
 		email: {
 			type: DataTypes.STRING,
