@@ -185,7 +185,7 @@ socket.on('messages', function(result) {
 				$photo = form.find('input[name=photo]');
 				if ($photo.val().length > 0) {
 					messageUpload.photo = $photo.val().split('\\')[2];
-					var x = document.findById($photo[0].attributes[1].nodeValue);
+					var x = document.getElementById($photo[0].attributes[1].nodeValue);
 					messageUpload.pSize = x.files[0].size;
 				}
 				$text = form.find('input[name=message]').val().trim();
@@ -242,7 +242,7 @@ $form.on('submit', function(event) {
 	var message = {};
 	$photo = $form.find('input[name=photo]');
 	if ($photo.val().length > 0) {
-		var x = document.findById($photo[0].attributes[1].nodeValue);
+		var x = document.getElementById($photo[0].attributes[1].nodeValue);
 		messageUpload.pSize = x.files[0].size;
 		message.photo = $photo.val().split('\\')[2];
 	}
