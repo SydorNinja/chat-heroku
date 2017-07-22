@@ -37,7 +37,7 @@ if (window.location.pathname != '/sign-up.html' && window.location.pathname != '
 
 
 
-if (window.location.host == 'sleepy-escarpment-54775.herokuapp.com' && window.location.pathname == '/chat.html') {
+if (window.location.pathname == '/chat.html') {
 
 	var instance = new SocketIOFileUpload(socket);
 	instance.listenOnSubmit(document.getElementById("submitb"), document.getElementById("siofu_input"));
@@ -56,40 +56,40 @@ console.log(window.location);
 jQuery('.room-title').text(room);
 
 socket.on('connect', function() {
-	if (window.location.href == 'https://sleepy-escarpment-54775.herokuapp.com/myProfile.html') {
+	if (window.location.pathname == '/myProfile.html') {
 		socket.emit('target', {});
 	}
-	if (window.location.href == 'https://sleepy-escarpment-54775.herokuapp.com/reloader.html') {
+	if (window.location.pathname == '/reloader.html') {
 		socket.emit('requireM', {
 			target: '200'
 		});
 	}
-	if (window.location.href == 'https://sleepy-escarpment-54775.herokuapp.com/favorite.html') {
+	if (window.location.pathname == '/favorite.html') {
 		console.log(1);
 		socket.emit('target4', {
 			target: '200'
 		});
 	}
-	if (window.location.href == 'https://sleepy-escarpment-54775.herokuapp.com/landing.html' || window.location.href == 'https://sleepy-escarpment-54775.herokuapp.com/favorite.html' || window.location.href == 'https://sleepy-escarpment-54775.herokuapp.com/myRooms.html') {
+	if (window.location.pathname == '/landing.html' || window.location.pathname == '/favorite.html' || window.location.pathname == '/myRooms.html') {
 
 		socket.emit('target2', {
 			target: '200'
 		});
 	}
-	if (window.location.host == 'sleepy-escarpment-54775.herokuapp.com' && window.location.pathname == '/roomDetailes.html') {
+	if (window.location.pathname == '/roomDetailes.html') {
 
 		socket.emit('target3', {
 			title: title
 		});
 	}
-	if (window.location.host == 'sleepy-escarpment-54775.herokuapp.com' && window.location.pathname == '/profile.html') {
+	if (window.location.pathname == '/profile.html') {
 
 		socket.emit('targeta', {
 			user: username
 		});
 	}
 
-	if (window.location.host == 'sleepy-escarpment-54775.herokuapp.com' && window.location.pathname == '/chat.html') {
+	if (window.location.pathname == '/chat.html') {
 		socket.emit('target3', {
 			mission: 'message',
 			title: room
@@ -100,13 +100,13 @@ socket.on('connect', function() {
 		});
 	}
 
-	if (window.location.host == 'sleepy-escarpment-54775.herokuapp.com' && window.location.pathname == '/roomDetailesChange.html') {
+	if (window.location.pathname == '/roomDetailesChange.html') {
 
 		var dest = 'https://sleepy-escarpment-54775.herokuapp.com/roomDetailesChange?title=' + title;
 		$("form[action='/roomDetailesChange']").attr('action', dest);
 	}
 
-	if (window.location.href == 'https://sleepy-escarpment-54775.herokuapp.com/publicRooms.html') {
+	if (window.location.pathname == '/publicRooms.html') {
 		socket.emit('target2', {
 			target: 'public'
 		});
@@ -280,7 +280,7 @@ $exitRoom = jQuery('#exitRoom');
 $exitRoom.on('submit', function(event) {
 	event.preventDefault();
 	socket.emit('exitRoom', {});
-	window.location.href = ('/landing.html');
+	window.location.pathname = ('/landing.html');
 });
 
 
@@ -327,14 +327,16 @@ socket.on('message', function(message) {
 });
 socket.on('target2', function(rooms) {
 
-	if (window.location.href == 'https://sleepy-escarpment-54775.herokuapp.com/landing.html' || window.location.href == 'https://sleepy-escarpment-54775.herokuapp.com/favorite.html') {
+	if (window.location.pathname == '/landing.html' || window.location.pathname == '/favorite.html') {
 		var $el = $('.selectClass');
 		$el.empty();
-		rooms.forEach(function(room) {
-			$el.append("<option style=\"width: 310px\" value=" + room + ">" + room + "</option>");
-		});
+		if (rooms) {
+			rooms.forEach(function(room) {
+				$el.append("<option style=\"width: 310px\" value=" + room + ">" + room + "</option>");
+			});
+		}
 
-	} else if (window.location.href == 'https://sleepy-escarpment-54775.herokuapp.com/publicRooms.html') {
+	} else if (window.location.pathname == '/publicRooms.html') {
 		console.log("dfsdfsd");
 		var $publicRooms = jQuery('.publicRooms');
 		if (rooms === false) {
@@ -372,7 +374,7 @@ socket.on('target2', function(rooms) {
 });
 
 socket.on('land', function() {
-	window.location.href = '/landing.html';
+	window.location.pathname = '/landing.html';
 });
 
 socket.on('requireM', function() {
@@ -443,6 +445,6 @@ if (window.location.pathname == '/landing.html') {
 	socket.emit('myPhoto', {});
 }
 
-socket.on('myPhoto', function(photo){
+socket.on('myPhoto', function(photo) {
 	$('#myPhoto').attr('src', photo);
 });
