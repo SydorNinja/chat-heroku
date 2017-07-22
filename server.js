@@ -192,7 +192,7 @@ app.get('/signout', middleware.requireAuthentication, function(req, res) {
 });
 
 
-app.post('/deleteUser', middleware.requireAuthentication, function(req, res) {
+app.get('/deleteUser', middleware.requireAuthentication, function(req, res) {
 	usercontroller.deleteUser(req.user).then(function() {
 		res.status(204).redirect('/index.html');
 	}, function() {
