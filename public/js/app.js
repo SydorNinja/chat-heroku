@@ -1,3 +1,29 @@
+function getCookie(cname) {
+    var name = cname + "=";
+    var decodedCookie = decodeURIComponent(document.cookie);
+    var ca = decodedCookie.split(';');
+    for(var i = 0; i <ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0) == ' ') {
+            c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) {
+            return c.substring(name.length, c.length);
+        }
+    }
+    return undefined;
+}
+
+
+if (window.location.pathname != '/index.html' || window.location.pathname != '/') {
+	var token = getCookie('Auth');
+	if (token == undefined) {
+		window.location.pathname = '/';
+	}
+}
+
+
+
 if (window.location.pathname != '/sign-up.html' && window.location.pathname != '/index.html' && window.location.pathname != '/') {
 
 
