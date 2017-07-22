@@ -526,7 +526,7 @@ io.on('connection', function(socket) {
 		}
 	});
 	socket.on('icon', function(request) {
-		roomcontroller.findRoomByTitle(target.title, socket.chatUser).then(function(room) {
+		roomcontroller.findRoomByTitle(request.title, socket.chatUser).then(function(room) {
 			if (room.icon != null) {}
 			socket.emit('icon', room.icon);
 		});
