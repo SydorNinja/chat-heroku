@@ -13,9 +13,9 @@ function getCookie(cname) {
     }
     return undefined;
 }
+var nonCookiePages = return window.location.pathname != '/index.html' && window.location.pathname != '/' && window.location.pathname != '/sign-up.html' && window.location.pathname != '/forgotPassword.html';
 
-
-if (window.location.pathname != '/index.html' && window.location.pathname != '/') {
+if (nonCookiePages) {
 	console.log(window.location.pathname);
 	var token = getCookie('Auth');
 	if (token == undefined) {
