@@ -1,17 +1,17 @@
 function getCookie(cname) {
-    var name = cname + "=";
-    var decodedCookie = decodeURIComponent(document.cookie);
-    var ca = decodedCookie.split(';');
-    for(var i = 0; i <ca.length; i++) {
-        var c = ca[i];
-        while (c.charAt(0) == ' ') {
-            c = c.substring(1);
-        }
-        if (c.indexOf(name) == 0) {
-            return c.substring(name.length, c.length);
-        }
-    }
-    return undefined;
+	var name = cname + "=";
+	var decodedCookie = decodeURIComponent(document.cookie);
+	var ca = decodedCookie.split(';');
+	for (var i = 0; i < ca.length; i++) {
+		var c = ca[i];
+		while (c.charAt(0) == ' ') {
+			c = c.substring(1);
+		}
+		if (c.indexOf(name) == 0) {
+			return c.substring(name.length, c.length);
+		}
+	}
+	return undefined;
 }
 if (window.location.pathname != '/index.html' && window.location.pathname != '/' && window.location.pathname != '/sign-up.html' && window.location.pathname != '/forgotPassword.html') {
 	console.log(window.location.pathname);
@@ -472,4 +472,14 @@ if (window.location.pathname != '/index.html' && window.location.pathname != '/'
 
 socket.on('myPhoto', function(photo) {
 	$('#myPhoto').attr('src', photo);
+});
+
+if (window.location.pathname == '/chat.html') {
+	socket.emit('icon', {
+		title: room
+	});
+}
+
+socket.on('icon', function(icon){
+	$('.room-icon').attr('src', icon);
 });

@@ -525,6 +525,12 @@ io.on('connection', function(socket) {
 			socket.emit('myPhoto', socket.chatUser.toPublicJSON().photo);
 		}
 	});
+	socket.on('icon', function(request) {
+		roomcontroller.findRoomByTitle(target.title, socket.chatUser).then(function(room) {
+			if (room.icon != null) {}
+			socket.emit('icon', room.icon);
+		});
+	});
 });
 
 db.sequelize.sync().then(function() {
