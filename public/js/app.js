@@ -466,7 +466,7 @@ socket.on('target3', function(room) {
 
 
 
-if (window.location.pathname == '/landing.html') {
+if (window.location.pathname != '/index.html' && window.location.pathname != '/' && window.location.pathname != '/sign-up.html' && window.location.pathname != '/forgotPassword.html') {
 	socket.emit('myPhoto', {});
 }
 
