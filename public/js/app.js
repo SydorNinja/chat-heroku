@@ -16,6 +16,7 @@ function getCookie(cname) {
 
 
 if (window.location.pathname != '/index.html' || window.location.pathname != '/') {
+	console.log(window.location.pathname);
 	var token = getCookie('Auth');
 	if (token == undefined) {
 		window.location.pathname = '/';
