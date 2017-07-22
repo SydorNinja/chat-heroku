@@ -71,7 +71,7 @@ app.post('/room', middleware.requireAuthentication, function(req, res) {
 });
 
 app.post('/changeRoomDetails', middleware.requireAuthentication, function(req, res) {
-	var roomTitle = req.headers.referer.slice(52);
+	var roomTitle = req.headers.referer.slice(70);
 	var body = req.body;
 	roomcontroller.changeRoomDetails(body, roomTitle, req.user).then(function() {
 		if (body.title != '' && body.title != undefined) {
@@ -85,7 +85,7 @@ app.post('/changeRoomDetails', middleware.requireAuthentication, function(req, r
 });
 
 app.post('/upload2', middleware.requireAuthentication, upload.single('sampleFile'), function(req, res, next) {
-	var roomTitle = req.headers.referer.slice(52);
+	var roomTitle = req.headers.referer.slice(70);
 	try {
 		var body = {};
 		fs.readFile(req.file.path, function(err, data) {
