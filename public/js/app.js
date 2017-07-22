@@ -127,7 +127,7 @@ socket.on('connect', function() {
 
 	if (window.location.pathname == '/roomDetailesChange.html') {
 
-		var dest = 'https://sleepy-escarpment-54775.herokuapp.com/roomDetailesChange?title=' + title;
+		var dest = '/roomDetailesChange?title=' + title;
 		$("form[action='/roomDetailesChange']").attr('action', dest);
 	}
 
@@ -433,7 +433,7 @@ socket.on('target3', function(room) {
 
 	if (room == null) {
 		$roomDetailes.append('<h1>No Room Found</h1>');
-		$("a[href='/roomDetailesChange.html']").attr('href', 'https://sleepy-escarpment-54775.herokuapp.com/landing.html');
+		$("a[href='/roomDetailesChange.html']").attr('href', '/landing.html');
 
 	} else {
 		console.log(room);
