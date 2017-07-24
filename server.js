@@ -515,6 +515,6 @@ io.on('connection', function(socket) {
 
 db.sequelize.sync().then(function() {
 	http.listen(PORT, function() {
-		console.log('Express server is listening on port: ' + PORT);
+		console.log('Express server is listening on port ' + PORT);
 	});
 });
