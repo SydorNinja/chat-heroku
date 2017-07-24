@@ -21,6 +21,29 @@ if (window.location.pathname != '/index.html' && window.location.pathname != '/'
 	}
 }
 
+if (window.location.pathname == '/landing.html') {
+	var downArrow = $('#arrowLand');
+	downArrow.on('click', function() {
+		console.log(downArrow.attr('class'));
+		if (downArrow.attr('class') == 'glyphicon glyphicon-arrow-down') {
+			downArrow.attr('class', 'glyphicon glyphicon-arrow-up');
+		} else {
+			downArrow.attr('class', 'glyphicon glyphicon-arrow-down');
+		}
+
+	});
+}
+
+
+$(document).ready(function() {
+	console.log(10001);
+	$("#filter").on("hide.bs.collapse", function() {
+		$(".filterb").html('Filters <span class="glyphicon glyphicon-collapse-down"></span>');
+	});
+	$("#filter").on("show.bs.collapse", function() {
+		$(".filterb").html('Filters <span class="glyphicon glyphicon-collapse-up"></span>');
+	});
+});
 
 
 if (window.location.pathname != '/sign-up.html' && window.location.pathname != '/index.html' && window.location.pathname != '/') {
@@ -65,7 +88,6 @@ if (window.location.pathname != '/sign-up.html' && window.location.pathname != '
 if (window.location.pathname == '/chat.html') {
 
 	var instance = new SocketIOFileUpload(socket);
-	instance.listenOnSubmit(document.getElementById("submitb"), document.getElementById("siofu_input"));
 }
 
 function daysCalc(messages, days) {
@@ -189,10 +211,6 @@ socket.on('messages', function(result) {
 
 
 			$messages.append($message);
-			if (result.username == message.sender) {
-
-				instance.listenOnSubmit(document.getElementById("submitb2" + message.id + ""), document.getElementById("siofu_input" + message.id + ""));
-			}
 
 			jQuery('#' + message.id).on('submit', function(event) {
 				event.preventDefault();
@@ -202,32 +220,64 @@ socket.on('messages', function(result) {
 			});
 			jQuery('#' + message.id + 'change').on('submit', function(event) {
 				var message = {};
+
 				event.preventDefault();
 				var id = (event.currentTarget.childNodes["0"].defaultValue);
+				var file = $('#siofu_input' + id);
 				var form = jQuery('#' + id + 'change');
 				var messageUpload = {};
 
-				$photo = form.find('input[name=photo]');
-				if ($photo.val().length > 0) {
-					messageUpload.photo = $photo.val().split('\\')[2];
-					var x = document.getElementById($photo[0].attributes[1].nodeValue);
-					messageUpload.pSize = x.files[0].size;
-				}
-				$text = form.find('input[name=message]').val().trim();
 				$TTL = form.find('select[name=TTL]');
-
 				if ($TTL.val() == "true") {
 					messageUpload.TTL = true;
 				}
+
+
+				$text = form.find('input[name=message]').val().trim();
 				if ($text.length > 0) {
 					messageUpload.text = $text;
 				}
-				if (messageUpload.text != undefined || messageUpload.photo != undefined) {
-					console.log("good!");
-					message.id = id;
-					message.messageUpload = messageUpload;
-					socket.emit('changeMessage', message);
+
+
+
+				$photo = form.find('input[name=photo]');
+				if ($photo.val().length > 0) {
+					var reader = new FileReader();
+					var start = new Date().getTime();
+					reader.onload = function() {
+						var data = reader.result;
+						if (data.match(/^data:image\//)) {
+							messageUpload.photo = data;
+							message.messageUpload = messageUpload;
+							message.id = id;
+							socket.emit('changeMessage', message);
+
+
+						} else {
+
+
+
+							if (messageUpload.text != undefined) {
+								message.messageUpload = messageUpload;
+								message.id = id;
+								socket.emit('changeMessage', message);
+							}
+
+
+
+						}
+					};
+					reader.readAsDataURL(file.prop('files')[0]);
+				} else {
+
+					if (messageUpload.text != undefined) {
+						message.messageUpload = messageUpload;
+						message.id = id;
+						socket.emit('changeMessage', message);
+					}
+
 				}
+				$photo.val('');
 			});
 		});
 
@@ -263,29 +313,59 @@ socket.on('Smessage', function(message) {
 
 var $form = jQuery('#message-form');
 $form.on('submit', function(event) {
+	var file = $('#siofu_input');
 	event.preventDefault();
 	var message = {};
-	$photo = $form.find('input[name=photo]');
-	if ($photo.val().length > 0) {
-		var x = document.getElementById($photo[0].attributes[1].nodeValue);
-		message.pSize = x.files[0].size;
-		message.photo = $photo.val().split('\\')[2];
-	}
-	$text = $form.find('input[name=message]').val().trim();
-	$TTL = $form.find('select[name=TTL]');
 
+
+
+	$TTL = $form.find('select[name=TTL]');
 	if ($TTL.val() == "true") {
 		message.TTL = true;
 		console.log($TTL.val() + ' is true');
 	} else {
 		console.log($TTL.val() + ' not true');
 	}
+
+	$text = $form.find('input[name=message]').val().trim();
 	if ($text.length > 0) {
 		message.text = $text;
 	}
-	console.log(message);
-	if (message.text != undefined || message.photo != undefined) {
-		socket.emit('message', message);
+
+
+
+	$photo = $form.find('input[name=photo]');
+	if ($photo.val().length > 0) {
+		var reader = new FileReader();
+		var start = new Date().getTime();
+		reader.onload = function() {
+			var data = reader.result;
+			if (data.match(/^data:image\//)) {
+				message.photo = data;
+				socket.emit('message', message);
+
+
+			} else {
+
+
+
+				if (message.text != undefined) {
+					console.log(message);
+					socket.emit('message', message);
+				}
+
+
+
+			}
+		};
+		reader.readAsDataURL(file.prop('files')[0]);
+	} else {
+
+		if (message.text != undefined) {
+			console.log(message);
+			socket.emit('message', message);
+		}
+
 	}
 	$("#siofu_input").val("");
 	$("#message_text").val("");
@@ -465,7 +545,6 @@ socket.on('target3', function(room) {
 });
 
 
-
 if (window.location.pathname != '/index.html' && window.location.pathname != '/' && window.location.pathname != '/sign-up.html' && window.location.pathname != '/forgotPassword.html') {
 	socket.emit('myPhoto', {});
 }
@@ -480,6 +559,33 @@ if (window.location.pathname == '/chat.html') {
 	});
 }
 
-socket.on('icon', function(icon){
+socket.on('icon', function(icon) {
 	$('.room-icon').attr('src', icon);
+});
+
+socket.emit('allR', {});
+
+
+
+var app = angular.module('myApp', [])
+
+var controlN = app.controller('namesCtrl', function($scope) {
+
+	$scope.names = [];
+	socket.on('allR', function(rooms) {
+		console.log('rooms:');
+		console.log(rooms);
+		$scope.names = rooms;
+		console.log($scope.names);
+
+	});
+
+});
+
+$('#searcher').on('input', function() {
+	if ($('#searcher').val().trim().length > 0) {
+		$('#try').show();
+	} else {
+		$('#try').hide();
+	}
 });

@@ -33,7 +33,9 @@ module.exports = {
 	deleteRoom: function(user, body) {
 		return new Promise(function(resolve, reject) {
 			if (body != null) {
-				var where = {title: body};
+				var where = {
+					title: body
+				};
 				console.log(where);
 				db.room.findOne({
 					where: where
@@ -176,7 +178,10 @@ module.exports = {
 					}).then(function(connection) {
 						if (connection != null) {
 							if (connection.role != 1) {
-
+								if (_.isString(body.icon)) {
+									body = _.pick(body, 'icon');
+									room.update(body);
+								}
 							} else {
 								if (body.password == '' && body.title != '') {
 									body = _.pick(body, 'title');

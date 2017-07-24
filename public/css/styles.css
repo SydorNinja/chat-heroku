@@ -30,3 +30,7 @@ h1 {
 	float: left;
 	padding: 10px;
 }
+
+.rooms-list {
+	margin: 6px; 0;
+}

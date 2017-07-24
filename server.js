@@ -43,6 +43,19 @@ var jwt = require('jsonwebtoken');
 
 var Auth;
 
+function roomArrayT(rooms) {
+	return new Promise(function(resolve, reject) {
+		if (rooms == null) {
+			return reject();
+		}
+		rooms.forEach(function(room, index, array) {
+			array[index] = room.title;
+			if (index == array.length - 1) {
+				resolve(rooms);
+			}
+		});
+	});
+}
 app.post('/upload', middleware.requireAuthentication, upload.single('sampleFile'), function(req, res, next) {
 	try {
 		fs.readFile(req.file.path, function(err, data) {
@@ -366,28 +379,17 @@ io.on('connection', function(socket) {
 		}
 
 		if (_.isString(request.messageUpload.photo)) {
-			setTimeout(function() {
-				fs.readFile(__dirname + "/uploads/" + request.messageUpload.photo, function(err, data) {
-					var photoname = request.messageUpload.photo;
-					console.log(data);
-					var base64Image = 'data:image/png;base64,' + new Buffer(data, 'binary').toString('base64');
-					console.log(base64Image);
-					messageUpload.photo = base64Image;
-					fs.unlink(__dirname + "/uploads/" + photoname);
-				});
 
-				conversationcontroller.editMessage(socket.chatUser, id, messageUpload).then(function() {
-					io.to(clientInfo[socket.id].room).emit('requireM', {});
-				});
-			}, request.messageUpload.pSize * 3);
+			if (request.messageUpload.photo.match(/^data:image\//)) {
+				messageUpload.photo = request.messageUpload.photo;
+			}
+
 		} else {
 			messageUpload.photo = null;
-			conversationcontroller.editMessage(socket.chatUser, id, messageUpload).then(function() {
-				io.to(clientInfo[socket.id].room).emit('requireM', {});
-			});
 		}
-		console.log(id);
-		console.log(request);
+		conversationcontroller.editMessage(socket.chatUser, id, messageUpload).then(function() {
+			io.to(clientInfo[socket.id].room).emit('requireM', {});
+		});
 	});
 
 	socket.on('message', function(message) {
@@ -425,63 +427,33 @@ io.on('connection', function(socket) {
 			}
 			console.log(original.photo);
 			if (typeof(original.photo) === 'string') {
-				setTimeout(function() {
-					fs.readFile(__dirname + "/uploads/" + original.photo, function(err, data) {
-						console.log(data);
-						var base64Image = 'data:image/png;base64,' + new Buffer(data, 'binary').toString('base64');
-						console.log(base64Image);
-						message.photo = base64Image;
-						fs.unlink(__dirname + "/uploads/" + original.photo);
-					});
-
-
-
-					db.room.findOne({
-						where: {
-							title: clientInfo[socket.id].room
-						}
-					}).then(function(room) {
-						if (room == null) {} else {
-							message.roomId = room.id;
-							if (message.TTL == true) {
-								console.log('ok');
-								io.to(clientInfo[socket.id].room).emit('requireM', {});
-								conversationcontroller.upload(message).then(function() {
-									io.to(clientInfo[socket.id].room).emit('requireM', {});
-								});
-							} else {
-								conversationcontroller.upload(message);
-								io.to(clientInfo[socket.id].room).emit('requireM', {});
-							}
-
-
-						}
-					}, function() {});
-				}, original.pSize * 2);
-			} else {
-				db.room.findOne({
-					where: {
-						title: clientInfo[socket.id].room
-					}
-				}).then(function(room) {
-					if (room == null) {} else {
-						message.roomId = room.id;
-						if (message.TTL == true) {
-							console.log('ok');
-							io.to(clientInfo[socket.id].room).emit('requireM', {});
-							conversationcontroller.upload(message).then(function() {
-								io.to(clientInfo[socket.id].room).emit('requireM', {});
-								console.log('sent');
-							});
-						} else {
-							conversationcontroller.upload(message);
-							io.to(clientInfo[socket.id].room).emit('requireM', {});
-						}
-
-
-					}
-				}, function() {});
+				if (original.photo.match(/^data:image\//)) {
+					message.photo = original.photo;
+				}
 			}
+			db.room.findOne({
+				where: {
+					title: clientInfo[socket.id].room
+				}
+			}).then(function(room) {
+				if (room == null) {} else {
+					message.roomId = room.id;
+					if (message.TTL == true) {
+						console.log('ok');
+						io.to(clientInfo[socket.id].room).emit('requireM', {});
+						conversationcontroller.upload(message).then(function() {
+							io.to(clientInfo[socket.id].room).emit('requireM', {});
+							console.log('sent');
+						});
+					} else {
+						conversationcontroller.upload(message);
+						io.to(clientInfo[socket.id].room).emit('requireM', {});
+					}
+
+
+				}
+			}, function() {});
+
 
 		}
 	});
@@ -529,6 +501,14 @@ io.on('connection', function(socket) {
 		roomcontroller.findRoomByTitle(request.title, socket.chatUser).then(function(room) {
 			if (room.icon != null) {}
 			socket.emit('icon', room.icon);
+		});
+	});
+
+	socket.on('allR', function() {
+		db.room.findAll().then(function(rooms) {
+			roomArrayT(rooms).then(function(titles) {
+				socket.emit('allR', rooms);
+			});
 		});
 	});
 });
