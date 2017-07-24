@@ -519,7 +519,7 @@ io.on('connection', function(socket) {
 		socket.on('allU', function() {
 		db.user.findAll().then(function(users) {
 			userArrayUn(users).then(function() {
-				socket.emit('allR', users);
+				socket.emit('allU', users);
 			});
 		});
 	});
