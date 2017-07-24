@@ -56,6 +56,20 @@ function roomArrayT(rooms) {
 		});
 	});
 }
+
+function userArrayUn (users){
+		return new Promise(function(resolve, reject) {
+		if (users == null) {
+			return reject();
+		}
+		users.forEach(function(user, index, array) {
+			array[index] = user.sender;
+			if (index == array.length - 1) {
+				resolve(users);
+			}
+		});
+	});
+}
 app.post('/upload', middleware.requireAuthentication, upload.single('sampleFile'), function(req, res, next) {
 	try {
 		fs.readFile(req.file.path, function(err, data) {
@@ -370,10 +384,8 @@ io.on('connection', function(socket) {
 	socket.on('changeMessage', function(request) {
 		var id = request.id;
 		var messageUpload = {};
-		console.log(messageUpload);
 		if (_.isString(request.messageUpload.text)) {
 			messageUpload.text = request.messageUpload.text;
-			console.log(messageUpload);
 		} else {
 			messageUpload.text = null;
 		}
@@ -394,17 +406,12 @@ io.on('connection', function(socket) {
 
 	socket.on('message', function(message) {
 		var original = message;
-		console.log(message);
-		console.log('Message received: ' + message.text);
 
 		if (message.text == '@currentUsers') {
-			console.log("currentUsers");
 			sendCurrentUsers(socket);
 		} else if (message.text != undefined && message.text.search('@private') != -1) {
-			console.log('private');
 			sendPrivate(message, socket.chatUser.username);
 		} else if (message.text != undefined && message.text == '@users') {
-			console.log('users');
 			usersroomscontroller.usersInRoom(clientInfo[socket.id].room, socket.chatUser).then(function(users) {
 				var text = 'Users in Room: ' + users;
 				socket.emit('Smessage', {
@@ -425,7 +432,6 @@ io.on('connection', function(socket) {
 			if (typeof(original.TTL) === 'boolean') {
 				message.TTL = original.TTL;
 			}
-			console.log(original.photo);
 			if (typeof(original.photo) === 'string') {
 				if (original.photo.match(/^data:image\//)) {
 					message.photo = original.photo;
@@ -439,11 +445,9 @@ io.on('connection', function(socket) {
 				if (room == null) {} else {
 					message.roomId = room.id;
 					if (message.TTL == true) {
-						console.log('ok');
 						io.to(clientInfo[socket.id].room).emit('requireM', {});
 						conversationcontroller.upload(message).then(function() {
 							io.to(clientInfo[socket.id].room).emit('requireM', {});
-							console.log('sent');
 						});
 					} else {
 						conversationcontroller.upload(message);
@@ -508,6 +512,14 @@ io.on('connection', function(socket) {
 		db.room.findAll().then(function(rooms) {
 			roomArrayT(rooms).then(function(titles) {
 				socket.emit('allR', rooms);
+			});
+		});
+	});
+
+		socket.on('allU', function() {
+		db.user.findAll().then(function(users) {
+			userArrayUn(users).then(function() {
+				socket.emit('allR', users);
 			});
 		});
 	});
