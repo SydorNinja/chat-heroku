@@ -84,13 +84,6 @@ $(document).ready(function() {
 	});
 });
 
-
-
-if (window.location.pathname == '/chat.html') {
-
-	var instance = new SocketIOFileUpload(socket);
-}
-
 function daysCalc(messages, days) {
 	for (var i = 0; i < messages.length; i++) {
 		if (parseInt(messages[i].time) < moment().valueOf() - days * 86400) {
@@ -146,6 +139,10 @@ socket.on('connect', function() {
 
 		socket.emit('joinRoom', {
 			room: room
+		});
+
+		socket.emit('icon', {
+			title: room
 		});
 	}
 
@@ -545,11 +542,7 @@ socket.on('myPhoto', function(photo) {
 	$('#myPhoto').attr('src', photo);
 });
 
-if (window.location.pathname == '/chat.html') {
-	socket.emit('icon', {
-		title: room
-	});
-}
+
 
 socket.on('icon', function(icon) {
 	$('.room-icon').attr('src', icon);

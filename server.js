@@ -26,9 +26,6 @@ var clientInfo = {};
 var cookieParser = require('cookie-parser');
 app.use(cookieParser());
 var tokener = require('./tokenFind');
-var SocketIOFileUploadServer = require("socketio-file-upload");
-SocketIOFileUploadServer.listen(app);
-app.use(SocketIOFileUploadServer.router);
 app.post('/signup', function(req, res) {
 	var body = _.pick(req.body, 'email', 'password', 'username');
 	console.log(body);
@@ -280,10 +277,7 @@ function sendPrivate(message, username) {
 }
 
 io.on('connection', function(socket) {
-	var uploader = new SocketIOFileUploadServer();
-	uploader.dir = __dirname + "/uploads";
 	console.log('path: ' + __dirname);
-	uploader.listen(socket);
 	var token = socket.handshake.headers.cookie.split(" ");
 	if (token[1]) {
 		if (token[1].length > token[0].length) {
