@@ -125,10 +125,12 @@ module.exports = {
 
 									result.role = 1;
 									result.username = user.username;
+									console.log('sent admin');
 									resolve(result);
 								} else {
 
 									result.username = user.username;
+									console.log('sent not admin');
 									resolve(result);
 								}
 
