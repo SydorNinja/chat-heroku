@@ -54,8 +54,8 @@ function roomArrayT(rooms) {
 	});
 }
 
-function userArrayUn (users){
-		return new Promise(function(resolve, reject) {
+function userArrayUn(users) {
+	return new Promise(function(resolve, reject) {
 		if (users == null) {
 			return reject();
 		}
@@ -509,7 +509,7 @@ io.on('connection', function(socket) {
 		});
 	});
 
-		socket.on('allU', function() {
+	socket.on('allU', function() {
 		db.user.findAll().then(function(users) {
 			userArrayUn(users).then(function() {
 				socket.emit('allU', users);
@@ -518,7 +518,9 @@ io.on('connection', function(socket) {
 	});
 });
 
-db.sequelize.sync({force: true}).then(function() {
+db.sequelize.sync(/*{
+	force: true
+}*/).then(function() {
 	http.listen(PORT, function() {
 		console.log('Express server is listening on port ' + PORT);
 	});
