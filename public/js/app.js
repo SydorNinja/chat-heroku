@@ -1,3 +1,42 @@
+if (window.location.pathname != '/sign-up.html' && window.location.pathname != '/index.html' && window.location.pathname != '/') {
+
+
+	var username = getQueryVariable('username');
+	var password = getQueryVariable('password');
+	var title = getQueryVariable('title');
+	var room = getQueryVariable("room");
+	var socket = io();
+	var days = getQueryVariable('days');
+	var messagesNum = getQueryVariable('messagesNum');
+} else {
+	var socket = {
+		on: function() {
+			return undefined
+		}
+	}
+	var $un = $('#sform').find('input[id=sform-un]');
+	var $pass = $('#sform').find('input[id=sform-pass]');
+	var $email = $('#sform').find('input[id=sform-email]');
+	$('#sform').on('input', function(event) {
+		$pass.val('' + $pass.val().replace(' ', '') + '');
+		$un.val('' + $un.val().replace(' ', '') + '');
+		if (window.location.pathname == '/sign-up.html') {
+			$email.val('' + $email.val().replace(' ', '') + '');
+		}
+
+	});
+
+	$('#sform').on('submit', function(event) {
+		if ($un.val().length >= 4 && $un.val().length <= 12 && $pass.val().length >= 7 && $pass.val().length <= 100) {} else {
+			event.preventDefault();
+			console.log(2);
+		}
+	});
+
+}
+
+
+
 function getCookie(cname) {
 	var name = cname + "=";
 	var decodedCookie = decodeURIComponent(document.cookie);
@@ -44,44 +83,6 @@ $(document).ready(function() {
 		$(".filterb").html('Filters <span class="glyphicon glyphicon-collapse-up"></span>');
 	});
 });
-
-
-if (window.location.pathname != '/sign-up.html' && window.location.pathname != '/index.html' && window.location.pathname != '/') {
-
-
-	var username = getQueryVariable('username');
-	var password = getQueryVariable('password');
-	var title = getQueryVariable('title');
-	var room = getQueryVariable("room");
-	var socket = io();
-	var days = getQueryVariable('days');
-	var messagesNum = getQueryVariable('messagesNum');
-} else {
-	var socket = {
-		on: function() {
-			return undefined
-		}
-	}
-	var $un = $('#sform').find('input[id=sform-un]');
-	var $pass = $('#sform').find('input[id=sform-pass]');
-	var $email = $('#sform').find('input[id=sform-email]');
-	$('#sform').on('input', function(event) {
-		$pass.val('' + $pass.val().replace(' ', '') + '');
-		$un.val('' + $un.val().replace(' ', '') + '');
-		if (window.location.pathname == '/sign-up.html') {
-			$email.val('' + $email.val().replace(' ', '') + '');
-		}
-
-	});
-
-	$('#sform').on('submit', function(event) {
-		if ($un.val().length >= 4 && $un.val().length <= 12 && $pass.val().length >= 7 && $pass.val().length <= 100) {} else {
-			event.preventDefault();
-			console.log(2);
-		}
-	});
-
-}
 
 
 
@@ -141,6 +142,7 @@ socket.on('connect', function() {
 			mission: 'message',
 			title: room
 		});
+		console.log('sent request');
 
 		socket.emit('joinRoom', {
 			room: room
@@ -290,10 +292,7 @@ socket.on('messages', function(result) {
 
 socket.on('Smessage', function(message) {
 	var $messages = jQuery('.messages');
-	console.log("SM");
-	console.log(message);
 	var timestampMoment = moment.utc(parseInt(message.timestamp));
-	console.log(timestampMoment);
 	var $message = jQuery('<li class="list-group-item"></li>');
 	$message.append('<p><strong>' + message.sender + ' ' + timestampMoment.local().format('h:mm a') + '</strong></p>');
 	if (message.photo) {
@@ -566,10 +565,7 @@ var controlN = app.controller('namesCtrl', function($scope) {
 
 	$scope.names = [];
 	socket.on('allR', function(rooms) {
-		console.log('rooms:');
-		console.log(rooms);
 		$scope.names = rooms;
-		console.log($scope.names);
 
 	});
 
