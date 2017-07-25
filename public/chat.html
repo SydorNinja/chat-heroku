@@ -16,12 +16,10 @@
         text-align-last: center;
     }
     </style>
-        <script src="/js/socket.io-1.4.8.js"></script>
+    <script src="/js/socket.io-1.4.8.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
-        <script src="/js/QueryParams.js"></script>
-    <script src="/js/app.js"></script>
 </head>
 
 <body ng-app="myApp" ng-controller="namesCtrl">
@@ -57,9 +55,9 @@
                 <div class="navbar-form navbar-left">
                     <div class="form-group">
                         <input type="text" class="form-control" placeholder="Search for Room" name="title" ng-model="test" id="searcher">
-                                            <ul id="try" class="rooms-list list-group">
-                        <li ng-repeat="x in names | filter:test" class="list-group-item"><a href="/roomDetailes.html?title={{x}}">{{ x }}</a></li>
-                    </ul>
+                        <ul id="try" class="rooms-list list-group">
+                            <li ng-repeat="x in names | filter:test" class="list-group-item"><a href="/roomDetailes.html?title={{x}}">{{ x }}</a></li>
+                        </ul>
                     </div>
                     <span class="btn btn-default glyphicon glyphicon-search"></span>
                 </div>
@@ -119,6 +117,8 @@
             </div>
         </div>
     </div>
+    <script src="/js/QueryParams.js"></script>
+    <script src="/js/app.js"></script>
     <script src="/js/jquery-3.1.1.min.js"></script>>
     <script src="/js/moment.js"></script>
 </body>
