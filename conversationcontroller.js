@@ -106,7 +106,6 @@ module.exports = {
 				}).then(function(messages) {
 					if (messages.length == 0) {
 						result.message = 'no messages';
-						db
 					} else {
 						result.result = Publicating(messages, messages.length);
 					}
@@ -119,7 +118,7 @@ module.exports = {
 						}
 					}).then(function(connection) {
 							if (connection == null) {
-								reject();
+								return reject();
 							} else {
 								if (connection.role == 1) {
 
