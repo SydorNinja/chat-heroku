@@ -298,7 +298,6 @@ io.on('connection', function(socket) {
 		}, function() {});
 	}
 	socket.on('disconnect', function() {
-		usercontroller.signout(clientInfo.chatUser);
 
 		var userData = clientInfo[socket.id];
 		if (typeof userData != 'undefined') {
@@ -346,6 +345,7 @@ io.on('connection', function(socket) {
 		if (target.mission === 'message') {
 			conversationcontroller.seeMessages(target.title, socket.chatUser).then(function(messages) {
 				console.log(messages);
+				console.log('sent to: ' + socket.chatUser.username);
 				socket.emit('messages', messages);
 			});
 		} else {
