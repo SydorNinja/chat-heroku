@@ -1,3 +1,4 @@
+var messagesResult;
 if (window.location.pathname != '/sign-up.html' && window.location.pathname != '/index.html' && window.location.pathname != '/') {
 
 
@@ -131,15 +132,18 @@ socket.on('connect', function() {
 	}
 
 	if (window.location.pathname == '/chat.html') {
+
+		socket.emit('joinRoom', {
+			room: room
+		});
+
 		socket.emit('target3', {
 			mission: 'message',
 			title: room
 		});
 		console.log('sent request');
 
-		socket.emit('joinRoom', {
-			room: room
-		});
+
 
 		socket.emit('icon', {
 			title: room
@@ -164,6 +168,7 @@ socket.on('connect', function() {
 socket.on('messages', function(result) {
 	console.log('role');
 	var messages = result.result;
+	messagesResult = result;
 
 
 	var $messages = jQuery('.messages');
