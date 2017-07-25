@@ -164,13 +164,11 @@ socket.on('connect', function() {
 
 socket.on('messages', function(result) {
 	console.log('role');
-	console.log(result);
 	var messages = result.result;
 
 
 	var $messages = jQuery('.messages');
 	$messages.empty();
-	console.log(messages);
 	if (result.message === "no messages") {
 		console.log("sorry");
 		$messages.append('<p><h1>No Messages</strong></p>');
@@ -186,13 +184,10 @@ socket.on('messages', function(result) {
 			messages = messages.slice(messages.length - messagesNum, messages.length);
 		}
 		messages.forEach(function(message) {
-			console.log(message);
 			var timestampMoment = moment.utc(parseInt(message.time));
 
 			var $message = jQuery('<li class="list-group-item"></li>');
 
-			console.log('New message:');
-			console.log(message.text + ' photo ' + message.photo);
 			$message.append('<p><strong>' + message.sender + ' ' + timestampMoment.local().format('h:mm a') + '</strong></p>');
 			if (message.photo) {
 				$message.append('<p><strong> </strong></p>' + '<img src=' + message.photo + ' style= width:50px height:100px>');
@@ -283,7 +278,6 @@ socket.on('messages', function(result) {
 
 
 	}
-	console.log(result);
 	if (result.role != 1) {
 		console.log("no admin");
 		$adminRow = jQuery('#row-admin');
@@ -350,7 +344,6 @@ $form.on('submit', function(event) {
 
 
 				if (message.text != undefined) {
-					console.log(message);
 					socket.emit('message', message);
 				}
 
@@ -362,7 +355,6 @@ $form.on('submit', function(event) {
 	} else {
 
 		if (message.text != undefined) {
-			console.log(message);
 			socket.emit('message', message);
 		}
 

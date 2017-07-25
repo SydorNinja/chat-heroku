@@ -344,7 +344,8 @@ io.on('connection', function(socket) {
 		console.log(target);
 		if (target.mission === 'message') {
 			conversationcontroller.seeMessages(target.title, socket.chatUser).then(function(messages) {
-				console.log(messages);
+				console.log('text: '+messages[0].text);
+				console.log(typeof(messages[0].text));
 				console.log('sent to: ' + socket.chatUser.username);
 				socket.emit('messages', messages);
 			});
