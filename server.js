@@ -37,7 +37,6 @@ app.post('/signup', function(req, res) {
 });
 var cryptojs = require('crypto-js');
 var jwt = require('jsonwebtoken');
-
 var Auth;
 
 function roomArrayT(rooms) {
@@ -247,7 +246,7 @@ function sendCurrentUsers(socket) {
 		var userInfo = clientInfo[socketId];
 
 		if (info.room == userInfo.room) {
-			users.push(userInfo.name);
+			users.push(userInfo.username);
 		}
 	});
 
@@ -264,7 +263,7 @@ function sendPrivate(message, username) {
 		console.log('private != null');
 		var arrayText = text.split(" ");
 		Object.keys(clientInfo).forEach(function(socketId) {
-			var name = clientInfo[socketId].name;
+			var name = clientInfo[socketId].username;
 			if (arrayText[0] == name) {
 				io.to(socketId).emit('Smessage', {
 					text: text.replace(name, ' ').trim(),
@@ -298,7 +297,7 @@ io.on('connection', function(socket) {
 			socket.leave(userData.room);
 			io.to(userData.room).emit('Smessage', {
 				sender: 'System',
-				text: userData.name + ' has left!',
+				text: userData.username + ' has left!',
 				timestamp: moment().valueOf()
 			});
 			delete clientInfo[socket.id];
@@ -335,39 +334,21 @@ io.on('connection', function(socket) {
 		});
 	});
 	socket.on('target3', function(target) {
-		console.log(target);
-		if (target.mission === 'message') {
-			conversationcontroller.seeMessages(target.title, socket.chatUser).then(function(messages) {
-				console.log('sent to: ' + socket.chatUser.username);
-				socket.emit('messages', messages);
-			});
-		} else {
-			console.log(2002);
-			roomcontroller.findRoomByTitle(target.title, socket.chatUser).then(function(room) {
-				socket.emit('target3', room);
-			}, function() {
-				socket.emit('target3', null);
-			});
-		}
+		roomcontroller.findRoomByTitle(target.title, socket.chatUser).then(function(room) {
+			socket.emit('target3', room);
+		}, function() {
+			socket.emit('target3', null);
+		});
 
 	});
-	socket.on('joinRoom', function(req) {
-		req.name = socket.chatUser.username;
-		clientInfo[socket.id] = req;
-		console.log(clientInfo[socket.id]);
-		socket.join(req.room);
-		socket.broadcast.to(req.room).emit('Smessage', {
-			sender: 'System',
-			text: req.name + ' has joined!',
-			timestamp: moment().valueOf()
-		});
-	});
+
 	socket.on('deleteMessage', function(request) {
 		var id = request.id;
 		conversationcontroller.deleteMessage(socket.chatUser, id).then(function() {
 			io.to(clientInfo[socket.id].room).emit('requireM', {});
 		});
 	});
+
 	socket.on('delete', function() {
 		console.log('delete');
 		roomcontroller.deleteRoom(socket.chatUser, clientInfo[socket.id].room).then(function() {
@@ -516,11 +497,41 @@ io.on('connection', function(socket) {
 			});
 		});
 	});
+
+	socket.on('roomJoin', function(target) {
+		conversationcontroller.seeMessages(target.title, socket.chatUser).then(function(messages) {
+			console.log('sent to: ' + socket.chatUser.username);
+			clientInfo[socket.id] = {
+				room: target.title,
+				username: socket.chatUser.username
+			};
+			console.log(clientInfo[socket.id]);
+			socket.join(clientInfo[socket.id].room);
+			socket.emit('messages', messages);
+			socket.broadcast.to(clientInfo[socket.id].room).emit('Smessage', {
+				sender: 'System',
+				text: clientInfo[socket.id].username + ' has joined!',
+				timestamp: moment().valueOf()
+			});
+		}, function() {
+			socket.emit('land');
+		});
+	});
+	socket.on('requireM', function() {
+		conversationcontroller.seeMessages(clientInfo[socket.id].room, socket.chatUser).then(function(messages) {
+			console.log(messages);
+			socket.emit('messages', messages)
+		}, function() {
+			socket.emit('land');
+		});
+	});
 });
 
-db.sequelize.sync(/*{
-	force: true
-}*/).then(function() {
+db.sequelize.sync(
+	/*{
+		force: true
+	}*/
+).then(function() {
 	http.listen(PORT, function() {
 		console.log('Express server is listening on port ' + PORT);
 	});

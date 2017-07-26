@@ -1,10 +1,7 @@
 var messagesResult;
 if (window.location.pathname != '/sign-up.html' && window.location.pathname != '/index.html' && window.location.pathname != '/') {
-
-
-	var username = getQueryVariable('username');
-	var password = getQueryVariable('password');
 	var title = getQueryVariable('title');
+	var username = getQueryVariable('username');
 	var room = getQueryVariable("room");
 	var socket = io();
 	var days = getQueryVariable('days');
@@ -30,7 +27,6 @@ if (window.location.pathname != '/sign-up.html' && window.location.pathname != '
 	$('#sform').on('submit', function(event) {
 		if ($un.val().length >= 4 && $un.val().length <= 12 && $pass.val().length >= 7 && $pass.val().length <= 100) {} else {
 			event.preventDefault();
-			console.log(2);
 		}
 	});
 
@@ -54,7 +50,6 @@ function getCookie(cname) {
 	return undefined;
 }
 if (window.location.pathname != '/index.html' && window.location.pathname != '/' && window.location.pathname != '/sign-up.html' && window.location.pathname != '/forgotPassword.html') {
-	console.log(window.location.pathname);
 	var token = getCookie('Auth');
 	if (token == undefined) {
 		window.location.pathname = '/';
@@ -64,7 +59,6 @@ if (window.location.pathname != '/index.html' && window.location.pathname != '/'
 if (window.location.pathname == '/landing.html') {
 	var downArrow = $('#arrowLand');
 	downArrow.on('click', function() {
-		console.log(downArrow.attr('class'));
 		if (downArrow.attr('class') == 'glyphicon glyphicon-arrow-down') {
 			downArrow.attr('class', 'glyphicon glyphicon-arrow-up');
 		} else {
@@ -76,7 +70,6 @@ if (window.location.pathname == '/landing.html') {
 
 
 $(document).ready(function() {
-	console.log(10001);
 	$("#filter").on("hide.bs.collapse", function() {
 		$(".filterb").html('Filters <span class="glyphicon glyphicon-collapse-down"></span>');
 	});
@@ -93,21 +86,13 @@ function daysCalc(messages, days) {
 	}
 	return messages;
 }
-console.log(username + ' wants to join ');
-console.log(window.location);
 jQuery('.room-title').text(room);
 
 socket.on('connect', function() {
 	if (window.location.pathname == '/myProfile.html') {
 		socket.emit('target', {});
 	}
-	if (window.location.pathname == '/reloader.html') {
-		socket.emit('requireM', {
-			target: '200'
-		});
-	}
 	if (window.location.pathname == '/favorite.html') {
-		console.log(1);
 		socket.emit('target4', {
 			target: '200'
 		});
@@ -133,17 +118,9 @@ socket.on('connect', function() {
 
 	if (window.location.pathname == '/chat.html') {
 
-		socket.emit('joinRoom', {
-			room: room
-		});
-
-		socket.emit('target3', {
-			mission: 'message',
+		socket.emit('roomJoin', {
 			title: room
 		});
-		console.log('sent request');
-
-
 
 		socket.emit('icon', {
 			title: room
@@ -166,7 +143,6 @@ socket.on('connect', function() {
 });
 
 socket.on('messages', function(result) {
-	console.log('role');
 	var messages = result.result;
 	messagesResult = result;
 
@@ -174,10 +150,8 @@ socket.on('messages', function(result) {
 	var $messages = jQuery('.messages');
 	$messages.empty();
 	if (result.message === "no messages") {
-		console.log("sorry");
 		$messages.append('<p><h1>No Messages</strong></p>');
 	} else {
-		console.log(result.message);
 		messages = messages.sort(function(a, b) {
 			return a.id - b.id
 		});
@@ -195,7 +169,7 @@ socket.on('messages', function(result) {
 
 			$message.append('<p><strong>' + message.sender + ' ' + timestampMoment.local().format('h:mm a') + '</strong></p>');
 			if (message.photo) {
-				$message.append('<p><strong> </strong></p>' + '<img src=' + message.photo + ' style= width:50px height:100px>');
+				$message.append('<p><strong> </strong></p>' + '<img src=' + message.photo + ' style= "width:50px">');
 			}
 			if (message.text) {
 				$message.append('<p>' + message.text + '<p>');
@@ -318,9 +292,6 @@ $form.on('submit', function(event) {
 	$TTL = $form.find('select[name=TTL]');
 	if ($TTL.val() == "true") {
 		message.TTL = true;
-		console.log($TTL.val() + ' is true');
-	} else {
-		console.log($TTL.val() + ' not true');
 	}
 
 	$text = $form.find('input[name=message]').val().trim();
@@ -419,10 +390,7 @@ socket.on('target', function(profile) {
 	$profile.append('<p><strong> Signed up: ' + moment.utc(signup).local().format('h:mm a') + '</strong></p>');
 });
 socket.on('message', function(message) {
-	socket.emit('target3', {
-		mission: 'message',
-		title: room
-	});
+	socket.emit('requireM', {});
 });
 socket.on('target2', function(rooms) {
 
@@ -436,13 +404,11 @@ socket.on('target2', function(rooms) {
 		}
 
 	} else if (window.location.pathname == '/publicRooms.html') {
-		console.log("dfsdfsd");
 		var $publicRooms = jQuery('.publicRooms');
 		if (rooms === false) {
 			$publicRooms.append('<h1>No Rooms</h1>');
 		} else {
 
-			console.log(rooms);
 
 			$publicRooms.append('<h1> Public Rooms </h1>');
 			rooms.forEach(function(room) {
@@ -456,13 +422,11 @@ socket.on('target2', function(rooms) {
 			});
 		}
 	} else {
-		console.log(rooms + ' ' + typeof(rooms));
 		var $myRooms = jQuery('.myRooms');
 		if (rooms === false) {
 			$myRooms.append('<h1>No Rooms</h1>');
 		} else {
 
-			console.log(rooms);
 
 			$myRooms.append('<h1> My Rooms </h1>');
 			rooms.forEach(function(room) {
@@ -477,10 +441,8 @@ socket.on('land', function() {
 });
 
 socket.on('requireM', function() {
-	socket.emit('target3', {
-		mission: 'message',
-		title: room
-	});
+	console.log('update');
+	socket.emit('requireM', {});
 });
 
 socket.on('target4', function(rooms) {
@@ -488,8 +450,6 @@ socket.on('target4', function(rooms) {
 	if (rooms === false) {
 		$myRooms.append('<h1>No Favorite Rooms</h1>');
 	} else {
-
-		console.log(rooms);
 
 		$myRooms.append('<h1> My Favorite Rooms: </h1>');
 		rooms.forEach(function(room) {
@@ -507,10 +467,9 @@ socket.on('target3', function(room) {
 
 	if (room == null) {
 		$roomDetailes.append('<h1>No Room Found</h1>');
-		$("a[href='/roomDetailesChange.html']").attr('href', '/landing.html');
+		$("a[href='/roomDetailesChange.html']").remove();
 
 	} else {
-		console.log(room);
 		if (room.InRoom == undefined) {
 			$("a[href='/roomDetailesChange.html']").remove();
 		} else {
