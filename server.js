@@ -1,4 +1,5 @@
 var PORT = process.env.PORT || 3000;
+var jimp = require("jimp");
 var express = require('express');
 var app = express();
 var http = require('http').Server(app);
@@ -38,6 +39,26 @@ app.post('/signup', function(req, res) {
 var cryptojs = require('crypto-js');
 var jwt = require('jsonwebtoken');
 var Auth;
+
+
+
+function jimpBufferMessage(buffer) {
+	return new Promise(function(resolve, reject) {
+		function onBuffer(err, buffer) {
+			console.log(1001);
+			var photoDataUrl = 'data:image/png;base64,' + buffer.toString('base64');
+			console.log('photoDataUrl: ' + photoDataUrl);
+			resolve(photoDataUrl);
+		}
+
+		jimp.read(buffer, function(err, img) {
+			img.resize(50, jimp.AUTO)
+				.quality(60)
+				.getBuffer(img.getMIME(), onBuffer)
+		});
+
+	});
+}
 
 function roomArrayT(rooms) {
 	return new Promise(function(resolve, reject) {
@@ -290,6 +311,38 @@ io.on('connection', function(socket) {
 			socket.chatUser = user;
 		}, function() {});
 	}
+
+
+	function messageUploader(message) {
+		db.room.findOne({
+			where: {
+				title: clientInfo[socket.id].room
+			}
+		}).then(function(room) {
+			if (room == null) {} else {
+				message.roomId = room.id;
+				if (message.TTL == true) {
+					io.to(clientInfo[socket.id].room).emit('requireM', {});
+					conversationcontroller.upload(message).then(function() {
+						io.to(clientInfo[socket.id].room).emit('requireM', {});
+					});
+				} else {
+					conversationcontroller.upload(message).then(function() {
+						io.to(clientInfo[socket.id].room).emit('requireM', {});
+					});
+				}
+
+
+			}
+		}, function() {});
+	}
+
+	function messageChanger(id, messageUpload) {
+		conversationcontroller.editMessage(socket.chatUser, id, messageUpload).then(function() {
+			io.to(clientInfo[socket.id].room).emit('requireM', {});
+		});
+	}
+
 	socket.on('disconnect', function() {
 
 		var userData = clientInfo[socket.id];
@@ -367,15 +420,22 @@ io.on('connection', function(socket) {
 		if (_.isString(request.messageUpload.photo)) {
 
 			if (request.messageUpload.photo.match(/^data:image\//)) {
-				messageUpload.photo = request.messageUpload.photo;
+				var data = request.messageUpload.photo.indexOf('base64,') + 7;
+				data = request.messageUpload.photo.slice(data);
+				var buffer = new Buffer(data, 'base64');
+				jimpBufferMessage(buffer).then(function(photoDataUrl) {
+					messageUpload.photo = photoDataUrl;
+					messageChanger(id, messageUpload);
+				});
+			} else {
+				messageUpload.photo = null;
+				messageChanger(id, messageUpload);
 			}
 
 		} else {
 			messageUpload.photo = null;
+			messageChanger(id, messageUpload);
 		}
-		conversationcontroller.editMessage(socket.chatUser, id, messageUpload).then(function() {
-			io.to(clientInfo[socket.id].room).emit('requireM', {});
-		});
 	});
 
 	socket.on('message', function(message) {
@@ -408,29 +468,24 @@ io.on('connection', function(socket) {
 			}
 			if (typeof(original.photo) === 'string') {
 				if (original.photo.match(/^data:image\//)) {
-					message.photo = original.photo;
+					var data = original.photo.indexOf('base64,') + 7;
+					data = original.photo.slice(data);
+					var buffer = new Buffer(data, 'base64');
+
+					jimpBufferMessage(buffer).then(function(photoDataUrl) {
+						message.photo = photoDataUrl;
+						messageUploader(message);
+					});
+
+
+
+				} else {
+					messageUploader(message);
 				}
+			} else {
+				messageUploader(message);
 			}
-			db.room.findOne({
-				where: {
-					title: clientInfo[socket.id].room
-				}
-			}).then(function(room) {
-				if (room == null) {} else {
-					message.roomId = room.id;
-					if (message.TTL == true) {
-						io.to(clientInfo[socket.id].room).emit('requireM', {});
-						conversationcontroller.upload(message).then(function() {
-							io.to(clientInfo[socket.id].room).emit('requireM', {});
-						});
-					} else {
-						conversationcontroller.upload(message);
-						io.to(clientInfo[socket.id].room).emit('requireM', {});
-					}
 
-
-				}
-			}, function() {});
 
 
 		}

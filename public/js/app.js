@@ -169,7 +169,7 @@ socket.on('messages', function(result) {
 
 			$message.append('<p><strong>' + message.sender + ' ' + timestampMoment.local().format('h:mm a') + '</strong></p>');
 			if (message.photo) {
-				$message.append('<p><strong> </strong></p>' + '<img src=' + message.photo + ' style= "width:50px">');
+				$message.append('<p><strong> </strong></p>' + '<img src=' + message.photo + '>');
 			}
 			if (message.text) {
 				$message.append('<p>' + message.text + '<p>');
