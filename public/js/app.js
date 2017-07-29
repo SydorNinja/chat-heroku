@@ -178,7 +178,7 @@ socket.on('messages', function(result) {
 			}
 			if (message.text) {
 				$message.append('<div class="' + message.id + 'cont"><p>' + message.text + '<p></div>');
-				txtChange = message.txt;
+				txtChange = message.text;
 			}
 			if (result.username == message.sender || result.role == 1) {
 				$message.append('<form  id="'+ message.id +'" class="medt"></button></form>');
