@@ -169,7 +169,7 @@ socket.on('messages', function(result) {
 		}
 		messages.forEach(function(message) {
 			var timestampMoment = moment.utc(parseInt(message.time));
-
+			var txtChange = '';
 			var $message = jQuery('<li class="list-group-item" id="mes-' + message.id + '"></li>');
 
 			$message.append('<p><strong>' + message.sender + ' ' + timestampMoment.local().format('h:mm a') + '</strong></p>');
@@ -178,12 +178,13 @@ socket.on('messages', function(result) {
 			}
 			if (message.text) {
 				$message.append('<div class="' + message.id + 'cont"><p>' + message.text + '<p></div>');
+				txtChange = message.txt;
 			}
 			if (result.username == message.sender || result.role == 1) {
 				$message.append('<form  id="'+ message.id +'" class="medt"></button></form>');
 			}
 			if (result.username == message.sender) {
-				$message.append('<form id="' + message.id + 'change" class="medt"><input type="hidden" name="id" value="' + message.id + '"><br><input type="text" name="message" class="form-control" id="abc" value="'+message.text+'"/><br><input type="file" id="siofu_input' + message.id + '" name="photo" class="form-control" /><br></form>');
+				$message.append('<form id="' + message.id + 'change" class="medt"><input type="hidden" name="id" value="' + message.id + '"><br><input type="text" name="message" class="form-control" id="abc" value="'+txtChange+'"/><br><input type="file" id="siofu_input' + message.id + '" name="photo" class="form-control" /><br></form>');
 
 			}
 			if (result.username == message.sender) {
