@@ -125,6 +125,8 @@ socket.on('connect', function() {
 		socket.emit('icon', {
 			title: room
 		});
+
+		$("a[href='/roomDetailesChange.html?title=']").attr('href', '/roomDetailesChange.html?title='+room);
 	}
 
 	if (window.location.pathname == '/roomDetailesChange.html') {
@@ -141,6 +143,9 @@ socket.on('connect', function() {
 
 	console.log('Connected to socket.io server! ');
 });
+
+
+
 
 socket.on('messages', function(result) {
 	var messages = result.result;
@@ -165,26 +170,49 @@ socket.on('messages', function(result) {
 		messages.forEach(function(message) {
 			var timestampMoment = moment.utc(parseInt(message.time));
 
-			var $message = jQuery('<li class="list-group-item"></li>');
+			var $message = jQuery('<li class="list-group-item" id="mes-' + message.id + '"></li>');
 
 			$message.append('<p><strong>' + message.sender + ' ' + timestampMoment.local().format('h:mm a') + '</strong></p>');
 			if (message.photo) {
-				$message.append('<p><strong> </strong></p>' + '<img src=' + message.photo + '>');
+				$message.append('<div class="' + message.id + 'cont"><p ><strong> </strong></p>' + '<img id="' + message.id + 'photo" src=' + message.photo + '></div>');
 			}
 			if (message.text) {
-				$message.append('<p>' + message.text + '<p>');
+				$message.append('<div class="' + message.id + 'cont"><p>' + message.text + '<p></div>');
 			}
 			if (result.username == message.sender || result.role == 1) {
-				$message.append('<form id="' + message.id + '"><input type="submit" class="btn btn-block btn-danger" value="delete"></form>');
+				$message.append('<form  id="'+ message.id +'" class="medt"></button></form>');
 			}
 			if (result.username == message.sender) {
-				$message.append('<br><br><form id="' + message.id + 'change"><input type="hidden" name="id" value="' + message.id + '"><br><input type="text" name="message" class="form-control" id="abc" /><br><input type="file" id="siofu_input' + message.id + '" name="photo" class="form-control" /><br><input type="submit" class="btn btn-block btn-warning" value="Change" id="submitb2' + message.id + '"></form>');
+				$message.append('<form id="' + message.id + 'change" class="medt"><input type="hidden" name="id" value="' + message.id + '"><br><input type="text" name="message" class="form-control" id="abc" value="'+message.text+'"/><br><input type="file" id="siofu_input' + message.id + '" name="photo" class="form-control" /><br></form>');
 
+			}
+			if (result.username == message.sender) {
+				$message.append('<div align="center"><button type="submit" id="' + message.id + 'btn" form="'+message.id+'" class="medt btn btn-danger glyphicon glyphicon-trash" value="delete"></button><button type="submit" form="'+message.id+'change" class="medt btn btn-success glyphicon glyphicon-saved" id="'+message.id+'changebtn"></button><div/>');
+			} else if (result.role == 1) {
+				$message.append('<div align="center"><button type="submit" id="' + message.id + 'btn" form="'+message.id+'" class="medt btn btn-danger glyphicon glyphicon-trash" value="delete"></button><div/>');
 			}
 
 
 
 			$messages.append($message);
+
+			jQuery('#mes-' + message.id).on('dblclick', function(event) {
+				if ($('#' + message.id + 'btn').attr('style') == 'display: none;') {
+					console.log($('#' + message.id + 'btn').attr('style') == 'display: none;');
+					$('#' + message.id+'btn').show();
+					$('.' + message.id + 'cont').hide();
+					$('#' + message.id + 'change').show();
+					$('#' + message.id + 'changebtn').show();
+				} else {
+					console.log($('#' + message.id + 'btn').attr('style'));
+					$('#' + message.id+'btn').hide();
+					$('.' + message.id + 'cont').show();
+					$('#' + message.id + 'change').hide();
+					$('#' + message.id + 'changebtn').hide();
+					$('#' + message.id).hide();
+				}
+
+			});
 
 			jQuery('#' + message.id).on('submit', function(event) {
 				event.preventDefault();
@@ -192,6 +220,7 @@ socket.on('messages', function(result) {
 					id: message.id
 				});
 			});
+
 			jQuery('#' + message.id + 'change').on('submit', function(event) {
 				var message = {};
 
@@ -253,6 +282,7 @@ socket.on('messages', function(result) {
 				}
 				$photo.val('');
 			});
+			$('.medt').hide();
 		});
 
 
@@ -497,6 +527,9 @@ socket.on('target3', function(room) {
 	}
 });
 
+$('.list-group-item').on('click', function() {
+	console.log(1)
+});
 
 if (window.location.pathname != '/index.html' && window.location.pathname != '/' && window.location.pathname != '/sign-up.html' && window.location.pathname != '/forgotPassword.html') {
 	socket.emit('myPhoto', {});
@@ -513,25 +546,68 @@ socket.on('icon', function(icon) {
 });
 
 socket.emit('allR', {});
+socket.emit('allU', {});
 
 
 
-var app = angular.module('myApp', [])
+var app = angular.module('myApp', []);
 
 var controlN = app.controller('namesCtrl', function($scope) {
-
+	$scope.users = [];
 	$scope.names = [];
+
+	$scope.users_head = [];
 	socket.on('allR', function(rooms) {
 		$scope.names = rooms;
+		$scope.rooms_head = [{
+			answer: 'Rooms:',
+			array: rooms
+		}];
 
 	});
 
-});
+	socket.on('allU', function(users) {
+		$scope.users = users;
+		$scope.users_head = [{
+			answer: 'Users:',
+			array: users
+		}];
 
-$('#searcher').on('input', function() {
-	if ($('#searcher').val().trim().length > 0) {
-		$('#try').show();
-	} else {
-		$('#try').hide();
-	}
+	});
+
+	$('.roomslb').hide();
+	$('.userslb').hide();
+	$('#searcher').on('input', function() {
+		$scope.test = $('#searcher').val().trim();
+		if ($('#searcher').val().trim().length > 0) {
+
+			$('#try').show();
+			$('.roomslb').hide();
+			$('.userslb').hide();
+			$scope.users.forEach(function(current) {
+				var str = current;
+				var match = new RegExp($scope.test, 'i');
+				console.log(str);
+				console.log(match);
+				if (str.match(match)) {
+					console.log(101);
+					$('.userslb').show();
+				}
+			});
+
+			$scope.names.forEach(function(current) {
+				var str = current;
+				var match = new RegExp($scope.test, 'i');
+				console.log(str);
+				console.log(match);
+				if (str.match(match)) {
+					console.log(101);
+					$('.roomslb').show();
+				}
+			});
+		} else {
+			$('#try').hide();
+		}
+	});
+
 });

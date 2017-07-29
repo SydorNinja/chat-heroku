@@ -80,7 +80,7 @@ function userArrayUn(users) {
 			return reject();
 		}
 		users.forEach(function(user, index, array) {
-			array[index] = user.sender;
+			array[index] = user.username;
 			if (index == array.length - 1) {
 				resolve(users);
 			}
@@ -113,7 +113,6 @@ app.post('/room', middleware.requireAuthentication, function(req, res) {
 	});
 
 });
-
 app.post('/changeRoomDetails', middleware.requireAuthentication, function(req, res) {
 	var roomTitle = req.headers.referer.slice(76);
 	var body = req.body;
@@ -129,6 +128,7 @@ app.post('/changeRoomDetails', middleware.requireAuthentication, function(req, r
 });
 
 app.post('/upload2', middleware.requireAuthentication, upload.single('sampleFile'), function(req, res, next) {
+	console.log(req.headers.referer.slice(76));
 	var roomTitle = req.headers.referer.slice(76);
 	try {
 		var body = {};
@@ -540,7 +540,8 @@ io.on('connection', function(socket) {
 	socket.on('allR', function() {
 		db.room.findAll().then(function(rooms) {
 			roomArrayT(rooms).then(function(titles) {
-				socket.emit('allR', rooms);
+
+				socket.emit('allR', titles);
 			});
 		});
 	});
