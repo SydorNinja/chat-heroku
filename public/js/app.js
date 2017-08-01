@@ -196,7 +196,9 @@ socket.on('messages', function(result) {
 
 			$messages.append($message);
 			$('.filerepresantation' + message.id).hide();
-			jQuery('#mes-' + message.id).on('click', function(event) {
+
+/*						jQuery('#mes-' + message.id).on('mouseenter', function(event) {
+				console.log(1);
 				if ($('#' + message.id + 'btn').attr('style') == 'display: none;') {
 					console.log($('#' + message.id + 'btn').attr('style') == 'display: none;');
 					$('#' + message.id + 'btn').show();
@@ -217,6 +219,40 @@ socket.on('messages', function(result) {
 					$('#' + message.id).hide();
 				}
 
+			});*/
+
+			jQuery('#mes-' + message.id).on('mouseenter', function(event) {
+				console.log(1);
+				/*if ($('#' + message.id + 'btn').attr('style') == 'display: none;') {*/
+					console.log($('#' + message.id + 'btn').attr('style') == 'display: none;');
+					$('#' + message.id + 'btn').show();
+					$('#siofu_input' + message.id).hide();
+					$('.' + message.id + 'cont').hide();
+					$('.filerepresantation' + message.id).show();
+					$('#' + message.id + 'change').show();
+					$('#' + message.id + 'file').show();
+					$('#' + message.id + 'changebtn').show();
+/*				} else {
+					console.log($('#' + message.id + 'btn').attr('style'));
+					$('#' + message.id + 'btn').hide();
+					$('.' + message.id + 'cont').show();
+					$('#' + message.id + 'change').hide();
+					$('.filerepresantation' + message.id).hide();
+					$('#' + message.id + 'file').hide();
+					$('#' + message.id + 'changebtn').hide();
+					$('#' + message.id).hide();
+				}*/
+
+			});
+			jQuery('#mes-' + message.id).on('mouseleave', function(event) {
+									console.log($('#' + message.id + 'btn').attr('style'));
+					$('#' + message.id + 'btn').hide();
+					$('.' + message.id + 'cont').show();
+					$('#' + message.id + 'change').hide();
+					$('.filerepresantation' + message.id).hide();
+					$('#' + message.id + 'file').hide();
+					$('#' + message.id + 'changebtn').hide();
+					$('#' + message.id).hide();
 			});
 
 			jQuery('#' + message.id).on('submit', function(event) {
