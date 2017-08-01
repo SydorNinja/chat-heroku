@@ -528,6 +528,13 @@ io.on('connection', function(socket) {
 			socket.emit('myPhoto', socket.chatUser.toPublicJSON().photo);
 		}
 	});
+
+	socket.on('myUsername', function() {
+		if (socket.chatUser.toPublicJSON().username != null) {
+			socket.emit('myUsername', socket.chatUser.toPublicJSON().username);
+		}
+	});
+
 	socket.on('icon', function(request) {
 		roomcontroller.findRoomByTitle(request.title, socket.chatUser).then(function(room) {
 			if (room.icon != null) {}

@@ -540,6 +540,13 @@ socket.on('myPhoto', function(photo) {
 	$('#myPhoto').attr('src', photo);
 });
 
+if (window.location.pathname != '/index.html' && window.location.pathname != '/' && window.location.pathname != '/sign-up.html' && window.location.pathname != '/forgotPassword.html') {
+	socket.emit('myUsername', {});
+}
+
+socket.on('myUsername', function(username) {
+	$('#my-username').html(username);
+});
 
 
 socket.on('icon', function(icon) {
@@ -598,7 +605,7 @@ var controlN = app.controller('namesCtrl', function($scope) {
 				if (str.match(match)) {
 					console.log(101);
 					$('.userslb').show();
-					
+
 					userFind = true;
 				}
 			});
