@@ -581,7 +581,10 @@ var controlN = app.controller('namesCtrl', function($scope) {
 
 
 	$('#searcher').on('input', function() {
+		var userFind;
+		var roomFind;
 		$scope.test = $('#searcher').val().trim();
+		$('#divider-u-r').hide();
 		if ($('#searcher').val().trim().length > 0) {
 
 			$('#try').show();
@@ -595,9 +598,8 @@ var controlN = app.controller('namesCtrl', function($scope) {
 				if (str.match(match)) {
 					console.log(101);
 					$('.userslb').show();
-					$('#divider-u-r').show();
-				}else{
-					$('#divider-u-r').hide();
+					
+					userFind = true;
 				}
 			});
 
@@ -609,8 +611,12 @@ var controlN = app.controller('namesCtrl', function($scope) {
 				if (str.match(match)) {
 					console.log(101);
 					$('.roomslb').show();
+					roomFind = true;
 				}
 			});
+			if (roomFind && userFind) {
+				$('#divider-u-r').show();
+			}
 		} else {
 			$('#try').hide();
 		}
