@@ -221,7 +221,8 @@ socket.on('messages', function(result) {
 
 						});*/
 
-			jQuery('body').on('mouseenter', function(event) {
+			jQuery('.container').on('mouseenter', function(event) {
+				console.log(10);
 				console.log($('#' + message.id + 'btn').attr('style'));
 				$('#' + message.id + 'btn').hide();
 				$('.' + message.id + 'cont').show();
