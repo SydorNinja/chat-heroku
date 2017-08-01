@@ -547,7 +547,7 @@ if (window.location.pathname != '/index.html' && window.location.pathname != '/'
 socket.on('myUsername', function(username) {
 	console.log(1);
 	console.log(username);
-	$('#my-username').html(username);
+	$('#my-username').html(username + ' ');
 });
 
 
