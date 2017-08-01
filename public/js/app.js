@@ -595,6 +595,9 @@ var controlN = app.controller('namesCtrl', function($scope) {
 				if (str.match(match)) {
 					console.log(101);
 					$('.userslb').show();
+					$('#divider-u-r').show();
+				}else{
+					$('#divider-u-r').hide();
 				}
 			});
 

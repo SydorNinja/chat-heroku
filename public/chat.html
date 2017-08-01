@@ -61,10 +61,10 @@
                         <span class="btn btn-default glyphicon glyphicon-search input-group-addon"></span>
                         <input type="text" class="form-control" placeholder="Search" name="title" ng-model="test" id="searcher">
                     </div>
-                    <ul id="try" class="list-group">
+                    <ul id="try" class="list-group" style="margin-bottom: 0px;">
                         <li class="list-group-item roomslb">{{rooms_head[0].answer}}</li>
                         <li ng-repeat="x in names | filter:test" class="list-group-item roomsl"><a href="/roomDetailes.html?title={{x}}">{{ x }}</a></li>
-                        <li role="separator" class="divider"></li>
+                        <li role="separator" class="divider" id="divider-u-r" style="display: none;"></li>
                         <li class="list-group-item userslb">{{users_head[0].answer}}</li>
                         <li ng-repeat="x in users | filter:test" class="list-group-item usersl"><a href="/profile.html?username={{x}}">{{ x }}</a></li>
                     </ul>
