@@ -196,7 +196,7 @@ socket.on('messages', function(result) {
 
 			$messages.append($message);
 			$('.filerepresantation' + message.id).hide();
-			jQuery('#mes-' + message.id).on('dblclick', function(event) {
+			jQuery('#mes-' + message.id).on('click', function(event) {
 				if ($('#' + message.id + 'btn').attr('style') == 'display: none;') {
 					console.log($('#' + message.id + 'btn').attr('style') == 'display: none;');
 					$('#' + message.id + 'btn').show();
