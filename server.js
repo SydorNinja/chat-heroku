@@ -428,12 +428,10 @@ io.on('connection', function(socket) {
 					messageChanger(id, messageUpload);
 				});
 			} else {
-				messageUpload.photo = null;
 				messageChanger(id, messageUpload);
 			}
 
 		} else {
-			messageUpload.photo = null;
 			messageChanger(id, messageUpload);
 		}
 	});

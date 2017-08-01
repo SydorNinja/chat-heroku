@@ -10,7 +10,7 @@
 </head>
 
 <body ng-app="myApp" ng-controller="namesCtrl">
-    <nav class="navbar navbar-inverse">
+    <nav class="navbar navbar-inverse navbar-fixed-top">
         <div class="container-fluid">
             <!-- Brand and toggle get grouped for better mobile display -->
             <div class="navbar-header">
@@ -40,13 +40,17 @@
                     </li>
                 </ul>
                 <div class="navbar-form navbar-left">
-                    <div class="form-group">
-                        <input type="text" class="form-control" placeholder="Search for Room" name="title" ng-model="test" id="searcher">
-                                            <ul id="try" class="rooms-list list-group">
-                        <li ng-repeat="x in names | filter:test" class="list-group-item"><a href="/roomDetailes.html?title={{x}}">{{ x }}</a></li>
-                    </ul>
+                    <div class="input-group">
+                        <span class="btn btn-default glyphicon glyphicon-search input-group-addon"></span>
+                        <input type="text" class="form-control" placeholder="Search" name="title" ng-model="test" id="searcher">
                     </div>
-                    <span class="btn btn-default glyphicon glyphicon-search"></span>
+                    <ul id="try" class="list-group">
+                        <li class="list-group-item roomslb">{{rooms_head[0].answer}}</li>
+                        <li ng-repeat="x in names | filter:test" class="list-group-item roomsl"><a href="/roomDetailes.html?title={{x}}">{{ x }}</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li class="list-group-item userslb">{{users_head[0].answer}}</li>
+                        <li ng-repeat="x in users | filter:test" class="list-group-item usersl"><a href="/profile.html?username={{x}}">{{ x }}</a></li>
+                    </ul>
                 </div>
                 <ul class="nav navbar-nav navbar-right">
                     <li style="padding-right: 10px"><a href="/signout" class="btn btn-warning btn-block">Sign Out</a></li>

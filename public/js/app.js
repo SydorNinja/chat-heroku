@@ -126,7 +126,7 @@ socket.on('connect', function() {
 			title: room
 		});
 
-		$("a[href='/roomDetailesChange.html?title=']").attr('href', '/roomDetailesChange.html?title='+room);
+		$("a[href='/roomDetailesChange.html?title=']").attr('href', '/roomDetailesChange.html?title=' + room);
 	}
 
 	if (window.location.pathname == '/roomDetailesChange.html') {
@@ -143,7 +143,6 @@ socket.on('connect', function() {
 
 	console.log('Connected to socket.io server! ');
 });
-
 
 
 
@@ -181,34 +180,39 @@ socket.on('messages', function(result) {
 				txtChange = message.text;
 			}
 			if (result.username == message.sender || result.role == 1) {
-				$message.append('<form  id="'+ message.id +'" class="medt"></button></form>');
+				$message.append('<form  id="' + message.id + '" class="medt"></button></form>');
 			}
 			if (result.username == message.sender) {
-				$message.append('<form id="' + message.id + 'change" class="medt"><input type="hidden" name="id" value="' + message.id + '"><br><input type="text" name="message" class="form-control" id="abc" value="'+txtChange+'"/><br><input type="file" id="siofu_input' + message.id + '" name="photo" class="form-control" /><br></form>');
+				$message.append('<form id="' + message.id + 'change" class="medt"><input type="hidden" name="id" value="' + message.id + '"><br><input type="text" name="message" class="form-control" id="abc" value="' + txtChange + '"/><br><input type="file" id="siofu_input' + message.id + '" name="photo" class="form-control" /><br></form>');
 
 			}
 			if (result.username == message.sender) {
-				$message.append('<div align="center"><button type="submit" id="' + message.id + 'btn" form="'+message.id+'" class="medt btn btn-danger glyphicon glyphicon-trash" value="delete"></button><button type="submit" form="'+message.id+'change" class="medt btn btn-success glyphicon glyphicon-saved" id="'+message.id+'changebtn"></button><div/>');
+				$message.append('<div align="center"><label for="siofu_input' + message.id + '" class="glyphicon glyphicon-edit btn btn-primary filerepresantation' + message.id + '"></label><button type="submit" id="' + message.id + 'btn" form="' + message.id + '" class="medt btn btn-danger glyphicon glyphicon-trash" value="delete"></button><button type="submit" form="' + message.id + 'change" class="medt btn btn-success glyphicon glyphicon-saved" id="' + message.id + 'changebtn"></button><div/>');
 			} else if (result.role == 1) {
-				$message.append('<div align="center"><button type="submit" id="' + message.id + 'btn" form="'+message.id+'" class="medt btn btn-danger glyphicon glyphicon-trash" value="delete"></button><div/>');
+				$message.append('<div align="center"><button type="submit" id="' + message.id + 'btn" form="' + message.id + '" class="medt btn btn-danger glyphicon glyphicon-trash" value="delete"></button><div/>');
 			}
 
 
 
 			$messages.append($message);
-
+			$('.filerepresantation' + message.id).hide();
 			jQuery('#mes-' + message.id).on('dblclick', function(event) {
 				if ($('#' + message.id + 'btn').attr('style') == 'display: none;') {
 					console.log($('#' + message.id + 'btn').attr('style') == 'display: none;');
-					$('#' + message.id+'btn').show();
+					$('#' + message.id + 'btn').show();
+					$('#siofu_input' + message.id).hide();
 					$('.' + message.id + 'cont').hide();
+					$('.filerepresantation' + message.id).show();
 					$('#' + message.id + 'change').show();
+					$('#' + message.id + 'file').show();
 					$('#' + message.id + 'changebtn').show();
 				} else {
 					console.log($('#' + message.id + 'btn').attr('style'));
-					$('#' + message.id+'btn').hide();
+					$('#' + message.id + 'btn').hide();
 					$('.' + message.id + 'cont').show();
 					$('#' + message.id + 'change').hide();
+					$('.filerepresantation' + message.id).hide();
+					$('#' + message.id + 'file').hide();
 					$('#' + message.id + 'changebtn').hide();
 					$('#' + message.id).hide();
 				}
@@ -261,11 +265,9 @@ socket.on('messages', function(result) {
 
 
 
-							if (messageUpload.text != undefined) {
-								message.messageUpload = messageUpload;
-								message.id = id;
-								socket.emit('changeMessage', message);
-							}
+							message.messageUpload = messageUpload;
+							message.id = id;
+							socket.emit('changeMessage', message);
 
 
 
@@ -274,11 +276,9 @@ socket.on('messages', function(result) {
 					reader.readAsDataURL(file.prop('files')[0]);
 				} else {
 
-					if (messageUpload.text != undefined) {
-						message.messageUpload = messageUpload;
-						message.id = id;
-						socket.emit('changeMessage', message);
-					}
+					message.messageUpload = messageUpload;
+					message.id = id;
+					socket.emit('changeMessage', message);
 
 				}
 				$photo.val('');
@@ -554,6 +554,9 @@ socket.emit('allU', {});
 var app = angular.module('myApp', []);
 
 var controlN = app.controller('namesCtrl', function($scope) {
+	$('.roomslb').hide();
+	$('.userslb').hide();
+	$('#try').hide();
 	$scope.users = [];
 	$scope.names = [];
 
@@ -576,8 +579,7 @@ var controlN = app.controller('namesCtrl', function($scope) {
 
 	});
 
-	$('.roomslb').hide();
-	$('.userslb').hide();
+
 	$('#searcher').on('input', function() {
 		$scope.test = $('#searcher').val().trim();
 		if ($('#searcher').val().trim().length > 0) {
