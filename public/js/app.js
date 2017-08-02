@@ -54,6 +54,12 @@ if (window.location.pathname != '/index.html' && window.location.pathname != '/'
 	if (token == undefined) {
 		window.location.pathname = '/';
 	}
+} else {
+	var token = getCookie('Auth');
+	if (token != undefined) {
+		window.location.pathname = '/landing.html';
+	}
+
 }
 
 if (window.location.pathname == '/landing.html') {
@@ -173,7 +179,7 @@ socket.on('messages', function(result) {
 
 			$message.append('<p><strong>' + message.sender + ' ' + timestampMoment.local().format('h:mm a') + '</strong></p>');
 			if (message.photo) {
-				$message.append('<div class="' + message.id + 'cont"><p ><strong> </strong></p>' + '<img id="' + message.id + 'photo" src=' + message.photo + '></div>');
+				$message.append('<div><p ><strong> </strong></p>' + '<img id="' + message.id + 'photo" src=' + message.photo + '></div>');
 			}
 			if (message.text) {
 				$message.append('<div class="' + message.id + 'cont"><p>' + message.text + '<p></div>');
@@ -333,6 +339,7 @@ socket.on('messages', function(result) {
 				}
 				$photo.val('');
 			});
+			window.scroll(0, document.documentElement.scrollHeight);
 			$('.medt').hide();
 		});
 

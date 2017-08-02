@@ -18,6 +18,7 @@
 
     body {
         padding-top: 70px;
+        padding-bottom: 354px;
     }
     </style>
     <script src="/js/socket.io-1.4.8.js"></script>
@@ -84,8 +85,8 @@
             <div class="col-md-2 col-md-offset-7 well">
                 <button type="button" id="clearAdmin" class="btn btn-danger btn-block">Clear Conversation</button>
                 <button type="button" id="deleteRoom" class="btn btn-danger btn-block">Delete Room</button>
-                <form id="deleteUserFRoom"><strong>User to Delete:</strong>
-                    <input type="text" name="username" id="username">
+                <form id="deleteUserFRoom" class="form-group"><strong>User to Delete:</strong>
+                    <input type="text" name="username" id="username" class="form-control" style="margin-bottom: 12px;">
                     <input type="submit" value="Remove User" class="btn btn-danger btn-block">
                 </form>
             </div>
@@ -96,7 +97,7 @@
                 <div><img class="room-icon" src=""><span><h1 class="room-title text-center">  </h1></span></div>
                 <ul class="messages list-group">
                 </ul>
-                <form id="message-form">
+<!--                 <form id="message-form">
                     <div class="form-group">
                         <div class="input-group">
                             <span class="input-group-addon">
@@ -119,13 +120,47 @@
                 <br>
                 <form id="sendMail">
                     <input type="submit" value="Send to Mail" class="btn btn-success btn-block">
-                </form>
+                </form> -->
             </div>
         </div>
     </div>
+    <nav class="navbar navbar-default navbar-fixed-bottom">
+        <div class="container-fluid">
+            <div class="container">
+                <div class="row ">
+                    <div class="col-md-6 col-md-offset-3 well">
+                        <form id="message-form">
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <span class="input-group-addon">
+                                    <i class="glyphicon glyphicon-comment"></i>
+                                </span>
+                                    <input type="text" name="message" class="form-control" id="message_text" />
+                                    <input type="file" id="siofu_input" name="photo" class="form-control" accept=image/* />
+                                    <select name="TTL" class="form-control">
+                                        <option value="false">Regular</option>
+                                        <option value="true">TTL</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <input type="submit" class="btn btn-primary btn-block" id="submitb" />
+                        </form>
+                        <br>
+                        <form id="exitRoom">
+                            <input type="submit" value="Exit Room" class="btn btn-danger btn-block">
+                        </form>
+                        <br>
+                        <form id="sendMail">
+                            <input type="submit" value="Send to Mail" class="btn btn-success btn-block">
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
     <script src="/js/QueryParams.js"></script>
     <script src="/js/app.js"></script>
-    <script src="/js/jquery-3.1.1.min.js"></script>>
+    <script src="/js/jquery-3.1.1.min.js"></script>
     <script src="/js/moment.js"></script>
 </body>
 
