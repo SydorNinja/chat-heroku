@@ -51,10 +51,18 @@ module.exports = {
 					if (room === null) {
 						reject();
 					} else {
-						user.addRoom(room, {
-							role: 0
+						db.usersrooms.findOne({
+							where: {
+								userId: user.id
+							}
+						}).then(function(connection) {
+							if (connection == null) {
+								user.addRoom(room, {
+									role: 0
+								});
+							}
+							resolve();
 						});
-						resolve();
 					}
 				}, function() {
 					reject();
@@ -70,10 +78,18 @@ module.exports = {
 				}
 			}).then(function(room) {
 				if (room != null) {
-					user.addRoom(room, {
-						role: 0
+					db.usersrooms.findOne({
+						where: {
+							userId: user.id
+						}
+					}).then(function(connection) {
+						if (connection == null) {
+							user.addRoom(room, {
+								role: 0
+							});
+						}
+						resolve();
 					});
-					resolve();
 				} else {
 					reject();
 				}
