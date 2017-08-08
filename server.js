@@ -456,15 +456,15 @@ io.on('connection', function(socket) {
 				userId: socket.chatUser.id,
 				sender: socket.chatUser.username
 			};
-			if (typeof(original.text) == 'string' && original.text.trim().length > 0) {
+			if (typeof(original.text) == 'string') {
 				if (original.emojisCodes) {
-					
+
 					message.emojiCodes = original.emojisCodes;
 
 					message.emojiIndexes = original.emojiIndexes;
 
 					message.text = original.text;
-				} else {
+				} else if (original.text.trim().length > 0) {
 					message.text = original.text.trim();
 				}
 			}
