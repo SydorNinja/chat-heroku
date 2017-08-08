@@ -728,3 +728,10 @@ var controlN = app.controller('namesCtrl', function($scope) {
 	});
 
 });
+
+
+
+
+socket.on('disconnect', (reason) => {
+  console.log(reason);
+});
