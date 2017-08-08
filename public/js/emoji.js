@@ -13,11 +13,9 @@ function matchEmojis(text) {
 
 function getCodes(emojisArr) {
 	var codesArray = [];
-	console.log(typeof(codesArray));
 	emojisArr.forEach(function(emoji, i, array) {
 		codesArray[i] = emoji.codePointAt(0);
 	});
-	console.log(codesArray);
 	return codesArray;
 }
 
@@ -46,11 +44,9 @@ function codesToEmojis(emojisCodes) {
 function emojiImplemText(text, emojis, indexes) {
 
 		text = text.split("");
-		console.log(emojis);
 		indexes = indexes.split(',');
 		emojis.forEach(function(emoji, i, array) {
 			text[indexes[i]] = emoji;
-			console.log(text);
 		});
 		return text.join('');
 	

@@ -244,7 +244,6 @@ socket.on('messages', function(result) {
 
 			jQuery('#mes-' + message.id).on('mouseenter', function(event) {
 				/*if ($('#' + message.id + 'btn').attr('style') == 'display: none;') {*/
-				console.log($('#' + message.id + 'btn').attr('style') == 'display: none;');
 				$('#' + message.id + 'btn').show();
 				$('#siofu_input' + message.id).hide();
 				$('.' + message.id + 'cont').hide();
@@ -448,7 +447,6 @@ $form.on('submit', function(event) {
 				var ans = findEmojis(emojis, message.text);
 				var codes = getCodes(emojis);
 				message.text = ans.editedText;
-				console.log(typeof(codes));
 				message.emojisCodes = codes.toString();
 				message.emojiIndexes = ans.indexes.toString();
 				socket.emit('message', message);
