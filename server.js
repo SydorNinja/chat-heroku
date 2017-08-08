@@ -436,7 +436,6 @@ io.on('connection', function(socket) {
 
 	socket.on('message', function(message) {
 		var original = message;
-		console.log('assas');
 
 		if (message.text == '@currentUsers') {
 			sendCurrentUsers(socket);
@@ -464,7 +463,6 @@ io.on('connection', function(socket) {
 
 					message.emojiIndexes = original.emojiIndexes;
 
-					console.log('textofit: ' + original.text + ' a');
 					message.text = original.text;
 				} else {
 					message.text = original.text.trim();
@@ -596,7 +594,6 @@ io.on('connection', function(socket) {
 		});
 	});
 });
-db.conversation.drop();
 db.sequelize.sync({
 	//	force: true
 }).then(function() {
