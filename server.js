@@ -102,8 +102,6 @@ app.post('/upload', middleware.requireAuthentication, upload.single('sampleFile'
 	}
 });
 
-
-
 app.post('/room', middleware.requireAuthentication, function(req, res) {
 	var body = _.pick(req.body, 'title', 'password');
 	roomcontroller.makeRoom(req.user, body).then(function(publicFormRoom) {
@@ -438,6 +436,7 @@ io.on('connection', function(socket) {
 
 	socket.on('message', function(message) {
 		var original = message;
+		console.log('assas');
 
 		if (message.text == '@currentUsers') {
 			sendCurrentUsers(socket);
@@ -459,7 +458,17 @@ io.on('connection', function(socket) {
 				sender: socket.chatUser.username
 			};
 			if (typeof(original.text) == 'string' && original.text.trim().length > 0) {
-				message.text = original.text.trim();
+				if (original.emojisCodes) {
+					
+					message.emojiCodes = original.emojisCodes;
+
+					message.emojiIndexes = original.emojiIndexes;
+
+					console.log('textofit: ' + original.text + ' a');
+					message.text = original.text;
+				} else {
+					message.text = original.text.trim();
+				}
 			}
 			if (typeof(original.TTL) === 'boolean') {
 				message.TTL = original.TTL;
@@ -587,12 +596,10 @@ io.on('connection', function(socket) {
 		});
 	});
 });
-
-db.sequelize.sync(
-	/*{
-		force: true
-	}*/
-).then(function() {
+db.conversation.drop();
+db.sequelize.sync({
+	//	force: true
+}).then(function() {
 	http.listen(PORT, function() {
 		console.log('Express server is listening on port ' + PORT);
 	});

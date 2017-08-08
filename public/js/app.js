@@ -182,6 +182,11 @@ socket.on('messages', function(result) {
 				$message.append('<div><p ><strong> </strong></p>' + '<img id="' + message.id + 'photo" src=' + message.photo + '></div>');
 			}
 			if (message.text) {
+				if (message.emojiCodes) {
+					message.emojis = codesToEmojis(message.emojiCodes.split(','));
+					message.text = emojiImplemText(message.text, message.emojis, message.emojiIndexes);
+				}
+
 				$message.append('<div class="' + message.id + 'cont"><p>' + message.text + '<p></div>');
 				txtChange = message.text;
 			}
@@ -228,8 +233,6 @@ socket.on('messages', function(result) {
 						});*/
 
 			jQuery('.container').on('mouseenter', function(event) {
-				console.log(10);
-				console.log($('#' + message.id + 'btn').attr('style'));
 				$('#' + message.id + 'btn').hide();
 				$('.' + message.id + 'cont').show();
 				$('#' + message.id + 'change').hide();
@@ -240,7 +243,6 @@ socket.on('messages', function(result) {
 			});
 
 			jQuery('#mes-' + message.id).on('mouseenter', function(event) {
-				console.log(1);
 				/*if ($('#' + message.id + 'btn').attr('style') == 'display: none;') {*/
 				console.log($('#' + message.id + 'btn').attr('style') == 'display: none;');
 				$('#' + message.id + 'btn').show();
@@ -263,7 +265,6 @@ socket.on('messages', function(result) {
 
 			});
 			jQuery('#mes-' + message.id).on('mouseleave', function(event) {
-				console.log($('#' + message.id + 'btn').attr('style'));
 				$('#' + message.id + 'btn').hide();
 				$('.' + message.id + 'cont').show();
 				$('#' + message.id + 'change').hide();
@@ -397,7 +398,23 @@ $form.on('submit', function(event) {
 			var data = reader.result;
 			if (data.match(/^data:image\//)) {
 				message.photo = data;
-				socket.emit('message', message);
+				if (message.text) {
+					matchEmojis(message.text).then(function(emojis) {
+						findEmojis(emojis, message.text).then(function(ans) {
+							getCodes(emojis).then(function(codes) {
+								message.text = ans.editedText;
+								message.emojisCodes = JSON.parse(codes);
+								message.emojiIndexes = JSON.parse(ans.indexes);
+								socket.emit('message', message);
+							});
+						});
+					}, function() {
+						socket.emit('message', message);
+					});
+				} else {
+					socket.emit('message', message);
+				}
+
 
 
 			} else {
@@ -405,7 +422,18 @@ $form.on('submit', function(event) {
 
 
 				if (message.text != undefined) {
-					socket.emit('message', message);
+					matchEmojis(message.text).then(function(emojis) {
+						findEmojis(emojis, message.text).then(function(ans) {
+							getCodes(emojis).then(function(codes) {
+								message.text = ans.editedText;
+								message.emojisCodes = JSON.parse(codes);
+								message.emojiIndexes = JSON.parse(ans.indexes);
+								socket.emit('message', message);
+							});
+						});
+					}, function() {
+						socket.emit('message', message);
+					});
 				}
 
 
@@ -416,7 +444,20 @@ $form.on('submit', function(event) {
 	} else {
 
 		if (message.text != undefined) {
-			socket.emit('message', message);
+			matchEmojis(message.text).then(function(emojis) {
+				var ans = findEmojis(emojis, message.text);
+				var codes = getCodes(emojis);
+				message.text = ans.editedText;
+				console.log(typeof(codes));
+				message.emojisCodes = codes.toString();
+				message.emojiIndexes = ans.indexes.toString();
+				socket.emit('message', message);
+
+
+			}, function() {
+				socket.emit('message', message);
+			});
+
 		}
 
 	}

@@ -25,16 +25,18 @@ module.exports = function(sequelize, DataTypes) {
 		},
 		photo: {
 			type: DataTypes.TEXT
-		}
+		},
+		emojiCodes: DataTypes.TEXT,
+		emojiIndexes: DataTypes.TEXT
 
 	}, {
 		instanceMethods: {
 			toPublic: function() {
-				return _.pick(this, 'sender', 'time', 'photo', 'text', 'id');
+				return _.pick(this, 'sender', 'time', 'photo', 'text', 'id', 'emojiIndexes', 'emojiCodes');
 			},
 			toPublicJSON: function() {
 				var json = this.toJSON();
-				return _.pick(json, 'sender', 'time', 'photo', 'text', 'id');
+				return _.pick(json, 'sender', 'time', 'photo', 'text', 'id', 'emojiIndexes', 'emojiCodes');
 			}
 		}
 	});
