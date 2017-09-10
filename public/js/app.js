@@ -176,6 +176,7 @@ socket.on('messages', function(result) {
             var timestampMoment = moment.utc(parseInt(message.time));
             var txtChange = '';
             var $message = jQuery('<li class="list-group-item" id="mes-' + message.id + '"></li>');
+            var $text = jQuery('<div class="' + message.id + 'cont"><p>' + '<p></div>');
 
             $message.append('<p><strong>' + message.sender + ' ' + timestampMoment.local().format('h:mm a') + '</strong></p>');
             if (message.photo) {
@@ -186,8 +187,9 @@ socket.on('messages', function(result) {
                     message.emojis = codesToEmojis(message.emojiCodes.split(','));
                     message.text = emojiImplemText(message.text, message.emojis, message.emojiIndexes);
                 }
+                $text.text(message.text);
 
-                $message.append('<div class="' + message.id + 'cont"><p><xmp>' + message.text + '</xmp><p></div>');
+                $message.append($text);
                 txtChange = message.text;
             }
             if (result.username == message.sender || result.role == 1) {
