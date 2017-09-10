@@ -175,7 +175,7 @@ socket.on('messages', function(result) {
         messages.forEach(function(message) {
             var timestampMoment = moment.utc(parseInt(message.time));
             var txtChange = '';
-            var $message = jQuery('<li class="list-group-item" id="mes-' + message.id + '"></li>');
+            var $message = jQuery('<li class="list-group-item" id="mes-' + message.id + '" style="overflow: auto;"></li>');
             var $text = jQuery('<div class="' + message.id + 'cont"><p>' + '<p></div>');
 
             $message.append('<p><strong>' + message.sender + ' ' + timestampMoment.local().format('h:mm a') + '</strong></p>');
